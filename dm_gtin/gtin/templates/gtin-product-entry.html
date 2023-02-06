@@ -1,0 +1,566 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- content -->
+
+<style>
+    .modal-body {
+        max-height: calc(100vh - 210px);
+        overflow-y: auto;
+    }
+</style>
+
+<div class="container p-4">
+    <h2>GTIN Product</h2>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#gtinModal">
+            Add new
+        </button>
+
+        <a class="btn btn-primary btn-block" href="/" >Back</a>
+    </div>
+   
+  
+</div>
+
+
+
+ <!-- Modal -->
+<div class="modal fade" id="gtinModal" tabindex="-1" aria-labelledby="gtinModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content p-3">
+        <form class="row g-3" id="addNewGtinProduct">
+            <div class="modal-header">
+            <h5 class="modal-title" id="gtinModalLabel">Add new GTIN Product</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Brand Owner Name</label>
+                        <input type="text" class="form-control" id="BrandOwnerName" value="" placeholder="Enter Brand Owner Name" onkeyup="removeErr('BrandOwnerName') ">
+                        <div class="invalid-feedback">
+                            Please enter a brand owner name.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Data Provider Name</label>
+                        <input type="text" class="form-control" id="DataProviderName" value="" placeholder="Enter Data Provider Name" onkeyup="removeErr('DataProviderName') ">
+                        <div class="invalid-feedback">
+                            Please enter a data provider name.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Manufacturer Name</label>
+                        <input type="text" class="form-control" id="ManufacturerName" value="" placeholder="Enter Manufacturer Name" onkeyup="removeErr('ManufacturerName') ">
+                        <div class="invalid-feedback">
+                            Please enter a data manufacturer name.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">GPC Code</label>
+                        <input type="text" class="form-control" id="GPCCode" value="" placeholder="Enter GPC Code" onkeyup="removeErr('GPCCode') ">
+                        <div class="invalid-feedback">
+                            Please enter a GPC code.
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-md-3">
+                        <label  class="form-label">Contact Type Code</label>
+                        <input type="text" class="form-control" id="ContactTypeCode" value="" placeholder="Enter Contact Type Code" onkeyup="removeErr('ContactTypeCode') ">
+                        <div class="invalid-feedback">
+                            Please enter a contact type code.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Contact</label>
+                        <input type="text" class="form-control" id="Contact" value="" placeholder="Enter Contact" onkeyup="removeErr('Contact') ">
+                        <div class="invalid-feedback">
+                            Please enter a contact.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Contact Address</label>
+                        <textarea class="form-control" id="ContactAddress" value="" placeholder="Enter Contact Address" onkeyup="removeErr('ContactAddress') "></textarea>
+                        <div class="invalid-feedback">
+                            Please enter a contact address.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Contact Method Code</label>
+                        <input type="text" class="form-control" id="ContactMethodCode" value="" placeholder="Enter Contact Method Code" onkeyup="removeErr('ContactMethodCode') ">
+                        <div class="invalid-feedback">
+                            Please enter a contact method code.
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-md-3">
+                        <label  class="form-label">Contact Details</label>
+                        <textarea class="form-control" id="ContactDetails" value="" placeholder="Enter Contact Details" onkeyup="removeErr('ContactDetails') "></textarea>
+                        <div class="invalid-feedback">
+                            Please enter a contact details.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Brand Name</label>
+                        <input type="text" class="form-control" id="BrandName" value="" placeholder="Enter Brand Name" onkeyup="removeErr('BrandName') ">
+                        <div class="invalid-feedback">
+                            Please enter a brand name.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Sub Brand Name</label>
+                        <input type="text" class="form-control" id="SubBrandName" value="" placeholder="Enter Sub Brand Name" onkeyup="removeErr('SubBrandName') ">
+                        <div class="invalid-feedback">
+                            Please enter a sub brand name.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Short Product Name</label>
+                        <input type="text" class="form-control" id="ShortProductName" value="" placeholder="Enter Short Product Name" onkeyup="removeErr('ShortProductName') ">
+                        <div class="invalid-feedback">
+                            Please enter a short product name.
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-md-3">
+                        <label  class="form-label">Product Marketing Message</label>
+                        <textarea class="form-control" id="ProductMarketingMessage" value="" placeholder="Enter Product Marketing Message" onkeyup="removeErr('ProductMarketingMessage') "></textarea>
+                        <div class="invalid-feedback">
+                            Please enter a product marketing message.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Search Key Words for Product</label>
+                        <textarea class="form-control" id="SearchKeyWordsforProduct" value="" placeholder="Enter Search Key Words for Product" onkeyup="removeErr('SearchKeyWordsforProduct') "></textarea>
+                        <div class="invalid-feedback">
+                            Please enter a search key words for product.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Product Type Description
+                        </label>
+                        <textarea class="form-control" id="ProductTypeDescription" value="" placeholder="Enter Product Type Description" onkeyup="removeErr('ProductTypeDescription') "></textarea>
+                        <div class="invalid-feedback">
+                            Please enter a product type description.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Depth/Length
+                        </label>
+                        <div class="input-group ">
+                            <input id="Length" 
+                                    class="form-control " 
+                                    type="number" 
+                                    placeholder="Enter Depth/Length" 
+                                    name="wrapped" 
+                                    step="0.01"
+                                    onkeyup="removeErr('Length') "
+                            />
+                            <div class="input-group-addon">
+                                <select class="form-control " id="LengthUnit">
+                                <option selected value="cm">cm</option>
+                                <option value="dm">dm</option>
+                                <option value="m">m</option>
+                                <option value="dcm">dcm</option>
+                                <option value="hm">hm</option>
+                                <option value="km">km</option>
+                                </select>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter a depth/length.
+                            </div>
+                        </div>
+                       
+                    </div>
+
+                </div>
+
+                <div class="row mt-2">
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Height
+                        </label>
+                        <div class="input-group ">
+                            <input id="Height" 
+                                    class="form-control " 
+                                    type="number" 
+                                    placeholder="Enter Height" 
+                                    name="wrapped" 
+                                    step="0.01"
+                                    onkeyup="removeErr('Height') "
+                            />
+                            <div class="input-group-addon">
+                                <select class="form-control " id="HeightUnit">
+                                <option selected value="cm">cm</option>
+                                <option value="ft">ft</option>
+                                <option value="in">in</option>
+                                </select>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter a height.
+                            </div>
+                        </div>
+                       
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Width
+                        </label>
+                        <div class="input-group ">
+                            <input id="Width" 
+                                    class="form-control " 
+                                    type="number" 
+                                    placeholder="Enter Width" 
+                                    name="wrapped" 
+                                    step="0.01"
+                                    onkeyup="removeErr('Width') "
+                            />
+                            <div class="input-group-addon">
+                                <select class="form-control " id="WidthUnit">
+                                <option selected value="cm">cm</option>
+                                <option value="ft">ft</option>
+                                <option value="in">in</option>
+                                </select>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter a width.
+                            </div>
+                        </div>
+                       
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Gross Weight
+                        </label>
+                        <div class="input-group ">
+                            <input id="GrossWeight" 
+                                    class="form-control " 
+                                    type="number" 
+                                    placeholder="Enter Gross Weight" 
+                                    name="wrapped" 
+                                    step="0.01"
+                                    onkeyup="removeErr('GrossWeight') "
+                            />
+                            <div class="input-group-addon">
+                                <select class="form-control " id="GrossWeightUnit">
+                                <option selected value="cm">cm</option>
+                                <option value="ft">ft</option>
+                                <option value="in">in</option>
+                                </select>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter a gross weight.
+                            </div>
+                        </div>
+                       
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Market Availability Date</label>
+                        <input type="date" class="form-control" id="MarketAvailabilityDate" value="" onkeyup="removeErr('MarketAvailabilityDate') ">
+                        <div class="invalid-feedback">
+                            Please select a market availability date.
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-md-3">
+                        <label  class="form-label">Allergen Containment Code</label>
+                        <input type="text" class="form-control" id="AllergenContainmentCode" value="" placeholder="Enter Allergen Containment Code" onkeyup="removeErr('AllergenContainmentCode') ">
+                        <div class="invalid-feedback">
+                            Please enter a allergen containment code.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Allergen Type Code</label>
+                        <input type="text" class="form-control" id="AllergenTypeCode" value="" placeholder="Enter Allergen Type Code" onkeyup="removeErr('AllergenTypeCode') ">
+                        <div class="invalid-feedback">
+                            Please enter a allergen type code.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Allergen Statement</label>
+                        <input type="text" class="form-control" id="AllergenStatement" value="" placeholder="Enter Allergen Statement" onkeyup="removeErr('AllergenStatement') ">
+                        <div class="invalid-feedback">
+                            Please enter a allergen statement.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label  class="form-label">Ingredient Statement
+                        </label>
+                        <textarea class="form-control" id="IngredientStatement" value="" placeholder="Enter Ingredient Statement" onkeyup="removeErr('IngredientStatement') "></textarea>
+                        <div class="invalid-feedback">
+                            Please enter a ingredient statement.
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="col-12">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="AllergenDeclarationsIndicator" >
+                      <label class="form-check-label" for="invalidCheck3">
+                        Allergen Declarations Indicator
+                      </label>
+                     
+                    </div>
+                </div>
+
+
+
+                
+
+
+            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+
+<script>
+
+$( document ).ready(function() {
+    $('#gtinModal').modal('toggle');
+});
+
+function removeErr(id){
+    $('#'+id).removeClass('is-invalid');
+}
+
+$( "#addNewGtinProduct" ).submit(function(e) {
+    e.preventDefault();
+    var BrandOwnerName= $('#BrandOwnerName').val()
+    var DataProviderName= $('#DataProviderName').val()
+    var ManufacturerName= $('#ManufacturerName').val()
+    var ContactTypeCode= $('#ContactTypeCode').val()
+    var Contact= $('#Contact').val()
+    var ContactAddress= $('#ContactAddress').val()
+    var ContactMethodCode= $('#ContactMethodCode').val()
+    var ContactDetails= $('#ContactDetails').val()
+    var BrandName= $('#BrandName').val()
+    var SubBrandName= $('#SubBrandName').val()
+    var ShortProductName= $('#ShortProductName').val()
+    var ProductMarketingMessage= $('#ProductMarketingMessage').val()
+    var SearchKeyWordsforProduct= $('#SearchKeyWordsforProduct').val()
+    var ProductTypeDescription= $('#ProductTypeDescription').val()
+    var Length= $('#Length').val()
+    var LengthUnit= $('#LengthUnit').val()
+    var Height= $('#Height').val()
+    var HeightUnit= $('#HeightUnit').val()
+    var Width= $('#Width').val()
+    var WidthUnit= $('#WidthUnit').val()
+    var GrossWeight= $('#GrossWeight').val()
+    var GrossWeightUnit= $('#GrossWeightUnit').val()
+    var MarketAvailabilityDate= $('#MarketAvailabilityDate').val()
+    var AllergenContainmentCode= $('#AllergenContainmentCode').val()
+    var AllergenTypeCode= $('#AllergenTypeCode').val()
+    var AllergenStatement= $('#AllergenStatement').val()
+    var IngredientStatement= $('#IngredientStatement').val()
+    var AllergenDeclarationsIndicator= $('#AllergenDeclarationsIndicator')[0].checked
+
+    alert(AllergenDeclarationsIndicator)
+
+    var isValidate = false;
+
+    if(BrandOwnerName == ""){
+        $('#BrandOwnerName').addClass('is-invalid')
+        $('#BrandOwnerName').focus()
+        isValidate = true;
+    }
+
+    if(DataProviderName == ""){
+        $('#DataProviderName').addClass('is-invalid')
+        $('#DataProviderName').focus()
+        isValidate = true;
+    }
+
+    if(ManufacturerName == ""){
+        $('#ManufacturerName').addClass('is-invalid')
+        $('#ManufacturerName').focus()
+        isValidate = true;
+    }
+
+    if(ContactTypeCode == ""){
+        $('#ContactTypeCode').addClass('is-invalid')
+        $('#ContactTypeCode').focus()
+        isValidate = true;
+    }
+
+    if(Contact == ""){
+        $('#Contact').addClass('is-invalid')
+        $('#Contact').focus()
+        isValidate = true;
+    }
+
+    if(ContactAddress == ""){
+        $('#ContactAddress').addClass('is-invalid')
+        $('#ContactAddress').focus()
+        isValidate = true;
+    }
+
+    if(ContactMethodCode == ""){
+        $('#ContactMethodCode').addClass('is-invalid')
+        $('#ContactMethodCode').focus()
+        isValidate = true;
+    }
+
+    if(ContactDetails == ""){
+        $('#ContactDetails').addClass('is-invalid')
+        $('#ContactDetails').focus()
+        isValidate = true;
+    }
+
+    if(BrandName == ""){
+        $('#BrandName').addClass('is-invalid')
+        $('#BrandName').focus()
+        isValidate = true;
+    }
+
+    if(SubBrandName == ""){
+        $('#SubBrandName').addClass('is-invalid')
+        $('#SubBrandName').focus()
+        isValidate = true;
+    }
+
+    if(ShortProductName == ""){
+        $('#ShortProductName').addClass('is-invalid')
+        $('#ShortProductName').focus()
+        isValidate = true;
+    }
+
+    if(ProductMarketingMessage == ""){
+        $('#ProductMarketingMessage').addClass('is-invalid')
+        $('#ProductMarketingMessage').focus()
+        isValidate = true;
+    }
+
+    if(SearchKeyWordsforProduct == ""){
+        $('#SearchKeyWordsforProduct').addClass('is-invalid')
+        $('#SearchKeyWordsforProduct').focus()
+        isValidate = true;
+    }
+
+    if(ProductTypeDescription == ""){
+        $('#ProductTypeDescription').addClass('is-invalid')
+        $('#ProductTypeDescription').focus()
+        isValidate = true;
+    }
+
+    if(Length == ""){
+        $('#Length').addClass('is-invalid')
+        $('#Length').focus()
+        isValidate = true;
+    }
+
+    if(Height == ""){
+        $('#Height').addClass('is-invalid')
+        $('#Height').focus()
+        isValidate = true;
+    }
+
+    if(Width == ""){
+        $('#Width').addClass('is-invalid')
+        $('#Width').focus()
+        isValidate = true;
+    }
+
+    if(GrossWeight == ""){
+        $('#GrossWeight').addClass('is-invalid')
+        $('#GrossWeight').focus()
+        isValidate = true;
+    }
+
+    if(MarketAvailabilityDate == ""){
+        $('#MarketAvailabilityDate').addClass('is-invalid')
+        $('#MarketAvailabilityDate').focus()
+        isValidate = true;
+    }
+
+    if(AllergenContainmentCode == ""){
+        $('#AllergenContainmentCode').addClass('is-invalid')
+        $('#AllergenContainmentCode').focus()
+        isValidate = true;
+    }
+
+    if(AllergenTypeCode == ""){
+        $('#AllergenTypeCode').addClass('is-invalid')
+        $('#AllergenTypeCode').focus()
+        isValidate = true;
+    }
+
+    if(AllergenStatement == ""){
+        $('#AllergenStatement').addClass('is-invalid')
+        $('#AllergenStatement').focus()
+        isValidate = true;
+    }
+
+    if(IngredientStatement == ""){
+        $('#IngredientStatement').addClass('is-invalid')
+        $('#IngredientStatement').focus()
+        isValidate = true;
+    }
+
+    if(isValidate) return false;
+
+    alert('all set');
+    
+    // $.ajax({
+    //     url: "/forms/asset_register/addasset/",
+    //     method: 'POST',
+    //     dataType: 'json',
+    //     headers: {'X-CSRFToken': '{{ csrf_token }}'},
+    //     data : {
+    //         'location_id':location_id,
+            
+    //     },
+
+    //     success: function (response) {
+
+            
+    //     }
+    // });
+    
+});
+
+
+
+
+</script>
+
+
+{% endblock %}
