@@ -32,6 +32,44 @@ class GTINProductEntry(View):
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
+    def post(self, request, *args, **kwargs):
+        data=[]
+        Product_data =Product.objects.filter()
+        for Products in Product_data:
+            print(Products)
+            data.append({ 
+                'gtin' :  Products.gtin,
+                'BrandOwnerName' : Products.BrandOwnerName,
+                'DataProviderName' : Products.DataProviderName,
+                'ManufacturerName' : Products.ManufacturerName,
+                'ContactTypeCode' : Products.ContactTypeCode,
+                'Contact' : Products.Contact,
+                'ContactAddress' : Products.ContactAddress,
+                'ContactMethodCode':Products.ContactMethodCode,
+                'ContactDetails' : Products.ContactDetails,
+                'BrandName' : Products.BrandName,
+                'SubBrandName' : Products.SubBrandName,
+                'ShortProductName' : Products.ShortProductName,
+                'ProductMarketingMessage' : Products.ProductMarketingMessage,
+                'SearchKeyWordsforProduct' : Products.SearchKeyWordsforProduct,
+                'ProductTypeDescription':Products.ProductTypeDescription,
+                'Length' : Products.Length,
+                'LengthUnit' : Products.LengthUnit,
+                'Height' : Products.Height,
+                'HeightUnit' : Products.HeightUnit,
+                'Width' : Products.Width,
+                'WidthUnit' : Products.WidthUnit,
+                'GrossWeight':Products.GrossWeight,
+                'GrossWeightUnit' : Products.GrossWeightUnit,
+                'MarketAvailabilityDate' : Products.MarketAvailabilityDate,
+                'AllergenContainmentCode' : Products.AllergenContainmentCode,
+                'AllergenTypeCode' : Products.AllergenTypeCode,
+                'AllergenStatement' : Products.AllergenStatement,
+                'IngredientStatement' : Products.IngredientStatement,
+                'AllergenDeclarationsIndicator':Products.AllergenDeclarationsIndicator,
+                'id':Products.id,
+            }) 
+        return JsonResponse({'data':data})
 
 class addGTINProductEntry(View):
     template_name = 'gtin-product-entry.html'
@@ -81,7 +119,49 @@ class addGTINProductEntry(View):
             return JsonResponse({'status':1,'message':'Successfully add new product.'})
         else:
             print('update')
-            return JsonResponse({'status':0})
+            Product.objects.filter(id=Id).update(BrandOwnerName=BrandOwnerName,DataProviderName=DataProviderName,ManufacturerName=ManufacturerName,ContactTypeCode=ContactTypeCode,Contact=Contact,ContactAddress=ContactAddress,ContactMethodCode=ContactMethodCode,ContactDetails=ContactDetails,BrandName=BrandName,SubBrandName=SubBrandName,ShortProductName=ShortProductName,ProductMarketingMessage=ProductMarketingMessage,SearchKeyWordsforProduct=SearchKeyWordsforProduct,ProductTypeDescription=ProductTypeDescription,Length=Length,LengthUnit=LengthUnit,Height=Height,HeightUnit=HeightUnit,Width=Width,WidthUnit=WidthUnit,GrossWeight=GrossWeight,GrossWeightUnit=GrossWeightUnit,MarketAvailabilityDate=MarketAvailabilityDate,AllergenContainmentCode=AllergenContainmentCode,AllergenTypeCode=AllergenTypeCode,AllergenStatement=AllergenStatement,IngredientStatement=IngredientStatement,AllergenDeclarationsIndicator=AllergenDeclarationsIndicator)
+            return JsonResponse({'status':1,'message':'Successfully update product.'})
+
+class editGTINProductEntry(View):
+    template_name = 'gtin-product-entry.html'
+
+    def post(self, request, *args, **kwargs):
+        data = []
+        req = request.POST
+        id = req.get('id')
+        res = Product.objects.filter(id=id)
+        data.append({
+            'BrandOwnerName' : res[0].BrandOwnerName,
+            'DataProviderName' : res[0].DataProviderName,
+            'ManufacturerName' : res[0].ManufacturerName,
+            'ContactTypeCode' : res[0].ContactTypeCode,
+            'Contact' : res[0].Contact,
+            'ContactAddress' : res[0].ContactAddress,
+            'ContactMethodCode':res[0].ContactMethodCode,
+            'ContactDetails' : res[0].ContactDetails,
+            'BrandName' : res[0].BrandName,
+            'SubBrandName' : res[0].SubBrandName,
+            'ShortProductName' : res[0].ShortProductName,
+            'ProductMarketingMessage' : res[0].ProductMarketingMessage,
+            'SearchKeyWordsforProduct' : res[0].SearchKeyWordsforProduct,
+            'ProductTypeDescription':res[0].ProductTypeDescription,
+            'Length' : res[0].Length,
+            'LengthUnit' : res[0].LengthUnit,
+            'Height' : res[0].Height,
+            'HeightUnit' : res[0].HeightUnit,
+            'Width' : res[0].Width,
+            'WidthUnit' : res[0].WidthUnit,
+            'GrossWeight':res[0].GrossWeight,
+            'GrossWeightUnit' : res[0].GrossWeightUnit,
+            'MarketAvailabilityDate' : res[0].MarketAvailabilityDate,
+            'AllergenContainmentCode' : res[0].AllergenContainmentCode,
+            'AllergenTypeCode' : res[0].AllergenTypeCode,
+            'AllergenStatement' : res[0].AllergenStatement,
+            'IngredientStatement' : res[0].IngredientStatement,
+            'AllergenDeclarationsIndicator':res[0].AllergenDeclarationsIndicator,
+        })
+
+        return JsonResponse({'status':1,'data':data})
 
 
         

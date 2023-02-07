@@ -7,4 +7,5 @@ urlpatterns = [
     path('gtin-list/', GTINList.as_view(), name='gtin-list'),
     path('gtin-product-entry/', GTINProductEntry.as_view(), name='gtin-product-entry'),
     path('add-gtin-product-entry/', addGTINProductEntry.as_view(), name='add-gtin-product-entry'),
+    path('edit-gtin-product-entry/', editGTINProductEntry.as_view(), name='edit-gtin-product-entry'),
 ]

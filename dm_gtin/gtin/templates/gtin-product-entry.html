@@ -13,15 +13,57 @@
     <h2>GTIN Product</h2>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
 
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#gtinModal">
+        <button type="button" class="btn btn-success" onclick="opengtinModal('');">
             Add new
         </button>
 
         <a class="btn btn-primary btn-block" href="/" >Back</a>
     </div>
+
+
+    <div class="row pt-4">
+        <div class="col-md-12">
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Gtin Num</th>
+                        <th>Brand Owner Name</th>
+                        <th>Data Provider Name</th>
+                        <th>Manufacturer Name</th>
+                        <th>Contact Type Code</th>
+                        <th>Contact</th>
+                        <th>Contact Address</th>
+                        <th>Contact Method Code</th>
+                        <th>Contact Details</th>
+                        <th>Brand Name</th>
+                        <th>Sub Brand Name</th>
+                        <th>Short Product Name</th>
+                        <th>Product Marketing Message</th>
+                        <th>Search KeyWords for Product</th>
+                        <th>Product Type Description</th>
+                        <th>Length</th>
+                        <th>Height</th>
+                        <th>Width</th>
+                        <th>Gross Weight</th>
+                        <th>Market Availability Date</th>
+                        <th>Allergen Containment Code</th>
+                        <th>Allergen Type Code</th>
+                        <th>Allergen Statement</th>
+                        <th>Ingredient Statement</th>
+                        <th>Allergen Declarations Indicator</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
    
   
 </div>
+
+
 
 
 
@@ -356,7 +398,8 @@
 <script>
 
 $( document ).ready(function() {
-    // $('#gtinModal').modal('toggle');
+    $('#example').DataTable({});
+    getGTINProduct();
 });
 
 function removeErr(id){
@@ -550,100 +593,338 @@ $( "#addNewGtinProduct" ).submit(function(e) {
         isValidate = true;
     }
 
-    // if(isValidate) return false;
+    if(isValidate) return false;
 
-    $.ajax({
-        url: serverURL+"getgtin",
-        method: 'GET',
-        mode: 'cors',
-        dataType: 'json',
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}',
-        },
-        data : {
-            'userId':userId,
-        },
-        success: function (response) {
-            console.log(response)
-            if(response.status == 1){
-               
-                $.ajax({
-                    url: "/add-gtin-product-entry/",
-                    method: 'POST',
-                    dataType: 'json',
-                    headers: {'X-CSRFToken': '{{ csrf_token }}'},
-                    data : {
-                        'gtin':response.gtin,
-                        'BrandOwnerName':BrandOwnerName,
-                        'DataProviderName':DataProviderName,
-                        'ManufacturerName':ManufacturerName,
-                        'ContactTypeCode':ContactTypeCode,
-                        'Contact':Contact,
-                        'ContactAddress':ContactAddress,
-                        'ContactMethodCode':ContactMethodCode,
-                        'ContactDetails':ContactDetails,
-                        'BrandName':BrandName,
-                        'SubBrandName':SubBrandName,
-                        'ShortProductName':ShortProductName,
-                        'ProductMarketingMessage':ProductMarketingMessage,
-                        'SearchKeyWordsforProduct':SearchKeyWordsforProduct,
-                        'ProductTypeDescription':ProductTypeDescription,
-                        'Length':Length,
-                        'LengthUnit':LengthUnit,
-                        'Height':Height,
-                        'HeightUnit':HeightUnit,
-                        'Width':Width,
-                        'WidthUnit':WidthUnit,
-                        'GrossWeight':GrossWeight,
-                        'GrossWeightUnit':GrossWeightUnit,
-                        'MarketAvailabilityDate':MarketAvailabilityDate,
-                        'AllergenContainmentCode':AllergenContainmentCode,
-                        'AllergenTypeCode':AllergenTypeCode,
-                        'AllergenStatement':AllergenStatement,
-                        'IngredientStatement':IngredientStatement,
-                        'AllergenDeclarationsIndicator':AllergenDeclarationsIndicator,
-                        'Id' :Id
-                      
-                    },
+    if(Id == ""){
+        $.ajax({
+            url: serverURL+"getgtin",
+            method: 'POST',
+            mode: 'cors',
+            dataType: 'json',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            data : {
+                'userid':userId,
+            },
+            success: function (response) {
+                console.log(response)
+                if(response.status == 1){
+                
+                    $.ajax({
+                        url: "/add-gtin-product-entry/",
+                        method: 'POST',
+                        dataType: 'json',
+                        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                        data : {
+                            'gtin':response.gtin,
+                            'BrandOwnerName':BrandOwnerName,
+                            'DataProviderName':DataProviderName,
+                            'ManufacturerName':ManufacturerName,
+                            'ContactTypeCode':ContactTypeCode,
+                            'Contact':Contact,
+                            'ContactAddress':ContactAddress,
+                            'ContactMethodCode':ContactMethodCode,
+                            'ContactDetails':ContactDetails,
+                            'BrandName':BrandName,
+                            'SubBrandName':SubBrandName,
+                            'ShortProductName':ShortProductName,
+                            'ProductMarketingMessage':ProductMarketingMessage,
+                            'SearchKeyWordsforProduct':SearchKeyWordsforProduct,
+                            'ProductTypeDescription':ProductTypeDescription,
+                            'Length':Length,
+                            'LengthUnit':LengthUnit,
+                            'Height':Height,
+                            'HeightUnit':HeightUnit,
+                            'Width':Width,
+                            'WidthUnit':WidthUnit,
+                            'GrossWeight':GrossWeight,
+                            'GrossWeightUnit':GrossWeightUnit,
+                            'MarketAvailabilityDate':MarketAvailabilityDate,
+                            'AllergenContainmentCode':AllergenContainmentCode,
+                            'AllergenTypeCode':AllergenTypeCode,
+                            'AllergenStatement':AllergenStatement,
+                            'IngredientStatement':IngredientStatement,
+                            'AllergenDeclarationsIndicator':AllergenDeclarationsIndicator,
+                            'Id' :Id
+                        
+                        },
 
-                    success: function (output) {
-                        Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Successfully add new product with gtin '+response.gtin,
-                        showConfirmButton: false,
-                        timer: 1500
-                        })
-                       
+                        success: function (output) {
+                            if(output.status == 1){
+                                Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Successfully add new product with gtin '+response.gtin,
+                                showConfirmButton: false,
+                                timer: 1500
+                                })
+
+                            }
+                        }
+                    });
+
+                }else{
+                    Swal.fire({
+                    title: 'Oops?',
+                    text: "GTIN id can't allocated for this product!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Try again'
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        $( "#addNewGtinProduct" ).submit();
                     }
-                });
-
-
-
-
-            }else{
-                Swal.fire({
-                title: 'Oops?',
-                text: "GTIN id can't allocated for this product!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Try again'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $( "#addNewGtinProduct" ).submit();
+                    })
                 }
-                })
+                
             }
+        });
+
+    }else{
+
+        $.ajax({
+            url: "/add-gtin-product-entry/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'gtin':'',
+                'BrandOwnerName':BrandOwnerName,
+                'DataProviderName':DataProviderName,
+                'ManufacturerName':ManufacturerName,
+                'ContactTypeCode':ContactTypeCode,
+                'Contact':Contact,
+                'ContactAddress':ContactAddress,
+                'ContactMethodCode':ContactMethodCode,
+                'ContactDetails':ContactDetails,
+                'BrandName':BrandName,
+                'SubBrandName':SubBrandName,
+                'ShortProductName':ShortProductName,
+                'ProductMarketingMessage':ProductMarketingMessage,
+                'SearchKeyWordsforProduct':SearchKeyWordsforProduct,
+                'ProductTypeDescription':ProductTypeDescription,
+                'Length':Length,
+                'LengthUnit':LengthUnit,
+                'Height':Height,
+                'HeightUnit':HeightUnit,
+                'Width':Width,
+                'WidthUnit':WidthUnit,
+                'GrossWeight':GrossWeight,
+                'GrossWeightUnit':GrossWeightUnit,
+                'MarketAvailabilityDate':MarketAvailabilityDate,
+                'AllergenContainmentCode':AllergenContainmentCode,
+                'AllergenTypeCode':AllergenTypeCode,
+                'AllergenStatement':AllergenStatement,
+                'IngredientStatement':IngredientStatement,
+                'AllergenDeclarationsIndicator':AllergenDeclarationsIndicator,
+                'Id' :Id
             
-        }
-    });
+            },
+
+            success: function (output) {
+                if(output.status == 1){
+                    Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Successfully update product ',
+                    showConfirmButton: false,
+                    timer: 1500
+                    })
+
+                }
+            }
+
+        });
+    }
+
+    
     
 });
 
+function getGTINProduct(){
 
+    $('#example').DataTable().destroy();
+    $('#example').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                { extend: 'excel', className: 'btn-outline-primary' },
+                { extend: 'pdf', className: 'btn-outline-primary' },
+                { extend: 'print', className: 'btn-outline-primary' }
+                ],
+                scrollY:        "400px",
+                scrollX:        true,
+                scrollCollapse: true,
+                paging:         true,
+                fixedColumns:   {
+                    left: 2,
+                    right: 1
+                },
+                "order": [[ 0, "asc" ]],
+                "searching" : true,
+                'ajax' : {
+                    "url": "/gtin-product-entry/",
+                    "type": "POST",
+                    "headers": {'X-CSRFToken': '{{ csrf_token }}'},
+                    'data' : {}
+                },
+                "columns" : [
+                    {"data" : "gtin"},
+                    {"data" : "BrandOwnerName"},
+                    {"data" : "DataProviderName"},
+                    {"data" : "ManufacturerName"},
+                    {"data" : "ContactTypeCode"},
+                    {"data" : "Contact"},
+                    {"data" : "ContactAddress"},
+                    {"data" : "ContactMethodCode"},
+                    {"data" : "ContactDetails"},
+
+                    {"data" : "BrandName"},
+                    {"data" : "SubBrandName"},
+                    {"data" : "ShortProductName"},
+                    {"data" : "ProductMarketingMessage"},
+                    {"data" : "SearchKeyWordsforProduct"},
+                    {"data" : "ProductTypeDescription"},
+
+                    {"data":null,"render":function(item){
+                            return item.Length+""+item.LengthUnit ;
+                        }
+                    },
+
+                    {"data":null,"render":function(item){
+                            return item.Height+""+item.HeightUnit ;
+                        }
+                    },
+
+                    {"data":null,"render":function(item){
+                            return item.Width+""+item.WidthUnit ;
+                        }
+                    },
+
+                    {"data":null,"render":function(item){
+                            return item.GrossWeight+""+item.GrossWeightUnit ;
+                        }
+                    },
+
+                    {"data" : "MarketAvailabilityDate"},
+                    {"data" : "AllergenContainmentCode"},
+                    {"data" : "AllergenTypeCode"},
+                    {"data" : "AllergenStatement"},
+                    {"data" : "IngredientStatement"},
+
+                    {"data":null,"render":function(item){
+                            if(item.AllergenDeclarationsIndicator == true)
+                                return "yes";
+                            else return "no";
+                        }
+                    },
+
+
+                    {"data":null,"render":function(item){
+                            return '<input type="button" value="Edit" class="btn btn-primary" onClick="return opengtinModal('+ item.id +')">';
+                        }
+                    },
+                ]
+    });
+
+}
+
+function opengtinModal(id){
+    $("#addNewGtinProduct").find('.is-invalid').removeClass("is-invalid");
+    if(id == ""){
+        $('#BrandOwnerName').val('')
+        $('#DataProviderName').val('')
+        $('#ManufacturerName').val('')
+        $('#ContactTypeCode').val('')
+        $('#Contact').val('')
+        $('#ContactAddress').val('')
+        $('#ContactMethodCode').val('')
+        $('#ContactDetails').val('')
+        $('#BrandName').val('')
+        $('#SubBrandName').val('')
+        $('#ShortProductName').val('')
+        $('#ProductMarketingMessage').val('')
+        $('#SearchKeyWordsforProduct').val('')
+        $('#ProductTypeDescription').val('')
+        $('#Length').val('')
+        // $('#LengthUnit').val()
+        $('#Height').val('')
+        // $('#HeightUnit').val()
+        $('#Width').val('')
+        // $('#WidthUnit').val()
+        $('#GrossWeight').val('')
+        // $('#GrossWeightUnit').val()
+        $('#MarketAvailabilityDate').val('')
+        $('#AllergenContainmentCode').val('')
+        $('#AllergenTypeCode').val('')
+        $('#AllergenStatement').val('')
+        $('#IngredientStatement').val('')
+        $('#AllergenDeclarationsIndicator').prop('checked', false);
+        $('#Id').val('')
+        
+
+    }else{
+
+        $.ajax({
+            url: "/edit-gtin-product-entry/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'id':id,
+            },
+
+            success: function (response) {
+               // console.log(response)
+                if(response.status == 1){
+                    var data = response.data[0];
+                    $('#BrandOwnerName').val(data['BrandOwnerName'])
+                    $('#DataProviderName').val(data['DataProviderName'])
+                    $('#ManufacturerName').val(data['ManufacturerName'])
+                    $('#ContactTypeCode').val(data['ContactTypeCode'])
+                    $('#Contact').val(data['Contact'])
+                    $('#ContactAddress').val(data['ContactAddress'])
+                    $('#ContactMethodCode').val(data['ContactMethodCode'])
+                    $('#ContactDetails').val(data['ContactDetails'])
+                    $('#BrandName').val(data['BrandName'])
+                    $('#SubBrandName').val(data['SubBrandName'])
+                    $('#ShortProductName').val(data['ShortProductName'])
+                    $('#ProductMarketingMessage').val(data['ProductMarketingMessage'])
+                    $('#SearchKeyWordsforProduct').val(data['SearchKeyWordsforProduct'])
+                    $('#ProductTypeDescription').val(data['ProductTypeDescription'])
+                    $('#Length').val(data['Length'])
+                    $('#LengthUnit').val(data['LengthUnit']).change();
+                    $('#Height').val(data['Height'])
+                    $('#HeightUnit').val(data['HeightUnit']).change();
+                    $('#Width').val(data['Width'])
+                    $('#WidthUnit').val(data['WidthUnit']).change();
+                    $('#GrossWeight').val(data['GrossWeight'])
+                    $('#GrossWeightUnit').val(data['GrossWeightUnit']).change();
+                    $('#MarketAvailabilityDate').val(data['MarketAvailabilityDate'])
+                    $('#AllergenContainmentCode').val(data['AllergenContainmentCode'])
+                    $('#AllergenTypeCode').val(data['AllergenTypeCode'])
+                    $('#AllergenStatement').val(data['AllergenStatement'])
+                    $('#IngredientStatement').val(data['IngredientStatement'])
+                    if( data['AllergenDeclarationsIndicator'] == true )
+                        $('#AllergenDeclarationsIndicator').prop('checked', true);
+                    else
+                        $('#AllergenDeclarationsIndicator').prop('checked', false);
+                    $('#Id').val(id)
+
+                }
+                
+            }
+        });
+
+
+    }
+    $('#gtinModal').modal('toggle');
+    
+}
 
 
 </script>
