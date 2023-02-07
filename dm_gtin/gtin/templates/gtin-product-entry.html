@@ -39,6 +39,8 @@
 
                     <div class="col-md-3">
                         <label  class="form-label">Brand Owner Name</label>
+                        <input type="hidden" id="Id" name="Id" value="" >
+                        <input type="hidden" id="userId" name="userId" value="{{ request.session.userId }}" >
                         <input type="text" class="form-control" id="BrandOwnerName" value="" placeholder="Enter Brand Owner Name" onkeyup="removeErr('BrandOwnerName') ">
                         <div class="invalid-feedback">
                             Please enter a brand owner name.
@@ -83,7 +85,7 @@
                     <div class="col-md-3">
                         <label  class="form-label">Contact</label>
                         <input type="text" class="form-control" id="Contact" value="" placeholder="Enter Contact" onkeyup="removeErr('Contact') ">
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback" id="ContactErrMeg">
                             Please enter a contact.
                         </div>
                     </div>
@@ -266,9 +268,8 @@
                             />
                             <div class="input-group-addon">
                                 <select class="form-control " id="GrossWeightUnit">
-                                <option selected value="cm">cm</option>
-                                <option value="ft">ft</option>
-                                <option value="in">in</option>
+                                <option selected value="kg">kg</option>
+                                <option value="g">g</option>
                                 </select>
                             </div>
                             <div class="invalid-feedback">
@@ -280,7 +281,7 @@
 
                     <div class="col-md-3">
                         <label  class="form-label">Market Availability Date</label>
-                        <input type="date" class="form-control" id="MarketAvailabilityDate" value="" onkeyup="removeErr('MarketAvailabilityDate') ">
+                        <input type="date" class="form-control" id="MarketAvailabilityDate" value="" onclick="removeErr('MarketAvailabilityDate') ">
                         <div class="invalid-feedback">
                             Please select a market availability date.
                         </div>
@@ -355,11 +356,20 @@
 <script>
 
 $( document ).ready(function() {
-    $('#gtinModal').modal('toggle');
+    // $('#gtinModal').modal('toggle');
 });
 
 function removeErr(id){
     $('#'+id).removeClass('is-invalid');
+}
+
+function validateContact(val)
+{
+  var regx = /^[6-9]\d{9}$/ ;
+  if(regx.test(val))
+    return false;
+  else
+    return true;
 }
 
 $( "#addNewGtinProduct" ).submit(function(e) {
@@ -392,11 +402,10 @@ $( "#addNewGtinProduct" ).submit(function(e) {
     var AllergenStatement= $('#AllergenStatement').val()
     var IngredientStatement= $('#IngredientStatement').val()
     var AllergenDeclarationsIndicator= $('#AllergenDeclarationsIndicator')[0].checked
-
-    alert(AllergenDeclarationsIndicator)
+    var Id = $('#Id').val()
+    var userId = $('#userId').val()
 
     var isValidate = false;
-
     if(BrandOwnerName == ""){
         $('#BrandOwnerName').addClass('is-invalid')
         $('#BrandOwnerName').focus()
@@ -405,155 +414,232 @@ $( "#addNewGtinProduct" ).submit(function(e) {
 
     if(DataProviderName == ""){
         $('#DataProviderName').addClass('is-invalid')
-        $('#DataProviderName').focus()
+        if(!isValidate) $('#DataProviderName').focus()
         isValidate = true;
     }
 
     if(ManufacturerName == ""){
         $('#ManufacturerName').addClass('is-invalid')
-        $('#ManufacturerName').focus()
+        if(!isValidate) $('#ManufacturerName').focus()
         isValidate = true;
     }
 
     if(ContactTypeCode == ""){
         $('#ContactTypeCode').addClass('is-invalid')
-        $('#ContactTypeCode').focus()
+        if(!isValidate) $('#ContactTypeCode').focus()
         isValidate = true;
     }
 
     if(Contact == ""){
         $('#Contact').addClass('is-invalid')
-        $('#Contact').focus()
+        $('#ContactErrMeg').html('Please enter a contact.')
+        if(!isValidate) $('#Contact').focus()
+        isValidate = true;
+    }else if( validateContact(Contact) ){
+        $('#Contact').addClass('is-invalid')
+        $('#ContactErrMeg').html('Please enter a valid contact number.')
+        if(!isValidate) $('#Contact').focus()
         isValidate = true;
     }
 
     if(ContactAddress == ""){
         $('#ContactAddress').addClass('is-invalid')
-        $('#ContactAddress').focus()
+        if(!isValidate) $('#ContactAddress').focus()
         isValidate = true;
     }
 
     if(ContactMethodCode == ""){
         $('#ContactMethodCode').addClass('is-invalid')
-        $('#ContactMethodCode').focus()
+        if(!isValidate) $('#ContactMethodCode').focus()
         isValidate = true;
     }
 
     if(ContactDetails == ""){
         $('#ContactDetails').addClass('is-invalid')
-        $('#ContactDetails').focus()
+        if(!isValidate) $('#ContactDetails').focus()
         isValidate = true;
     }
 
     if(BrandName == ""){
         $('#BrandName').addClass('is-invalid')
-        $('#BrandName').focus()
+        if(!isValidate) $('#BrandName').focus()
         isValidate = true;
     }
 
     if(SubBrandName == ""){
         $('#SubBrandName').addClass('is-invalid')
-        $('#SubBrandName').focus()
+        if(!isValidate) $('#SubBrandName').focus()
         isValidate = true;
     }
 
     if(ShortProductName == ""){
         $('#ShortProductName').addClass('is-invalid')
-        $('#ShortProductName').focus()
+        if(!isValidate) $('#ShortProductName').focus()
         isValidate = true;
     }
 
     if(ProductMarketingMessage == ""){
         $('#ProductMarketingMessage').addClass('is-invalid')
-        $('#ProductMarketingMessage').focus()
+        if(!isValidate) $('#ProductMarketingMessage').focus()
         isValidate = true;
     }
 
     if(SearchKeyWordsforProduct == ""){
         $('#SearchKeyWordsforProduct').addClass('is-invalid')
-        $('#SearchKeyWordsforProduct').focus()
+        if(!isValidate) $('#SearchKeyWordsforProduct').focus()
         isValidate = true;
     }
 
     if(ProductTypeDescription == ""){
         $('#ProductTypeDescription').addClass('is-invalid')
-        $('#ProductTypeDescription').focus()
+        if(!isValidate) $('#ProductTypeDescription').focus()
         isValidate = true;
     }
 
     if(Length == ""){
         $('#Length').addClass('is-invalid')
-        $('#Length').focus()
+        if(!isValidate) $('#Length').focus()
         isValidate = true;
     }
 
     if(Height == ""){
         $('#Height').addClass('is-invalid')
-        $('#Height').focus()
+        if(!isValidate) $('#Height').focus()
         isValidate = true;
     }
 
     if(Width == ""){
         $('#Width').addClass('is-invalid')
-        $('#Width').focus()
+        if(!isValidate) $('#Width').focus()
         isValidate = true;
     }
 
     if(GrossWeight == ""){
         $('#GrossWeight').addClass('is-invalid')
-        $('#GrossWeight').focus()
+        if(!isValidate) $('#GrossWeight').focus()
         isValidate = true;
     }
 
     if(MarketAvailabilityDate == ""){
         $('#MarketAvailabilityDate').addClass('is-invalid')
-        $('#MarketAvailabilityDate').focus()
+        if(!isValidate) $('#MarketAvailabilityDate').focus()
         isValidate = true;
     }
 
     if(AllergenContainmentCode == ""){
         $('#AllergenContainmentCode').addClass('is-invalid')
-        $('#AllergenContainmentCode').focus()
+        if(!isValidate) $('#AllergenContainmentCode').focus()
         isValidate = true;
     }
 
     if(AllergenTypeCode == ""){
         $('#AllergenTypeCode').addClass('is-invalid')
-        $('#AllergenTypeCode').focus()
+        if(!isValidate) $('#AllergenTypeCode').focus()
         isValidate = true;
     }
 
     if(AllergenStatement == ""){
         $('#AllergenStatement').addClass('is-invalid')
-        $('#AllergenStatement').focus()
+        if(!isValidate) $('#AllergenStatement').focus()
         isValidate = true;
     }
 
     if(IngredientStatement == ""){
         $('#IngredientStatement').addClass('is-invalid')
-        $('#IngredientStatement').focus()
+        if(!isValidate) $('#IngredientStatement').focus()
         isValidate = true;
     }
 
-    if(isValidate) return false;
+    // if(isValidate) return false;
 
-    alert('all set');
-    
-    // $.ajax({
-    //     url: "/forms/asset_register/addasset/",
-    //     method: 'POST',
-    //     dataType: 'json',
-    //     headers: {'X-CSRFToken': '{{ csrf_token }}'},
-    //     data : {
-    //         'location_id':location_id,
+    $.ajax({
+        url: serverURL+"getgtin",
+        method: 'GET',
+        mode: 'cors',
+        dataType: 'json',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+        },
+        data : {
+            'userId':userId,
+        },
+        success: function (response) {
+            console.log(response)
+            if(response.status == 1){
+               
+                $.ajax({
+                    url: "/add-gtin-product-entry/",
+                    method: 'POST',
+                    dataType: 'json',
+                    headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                    data : {
+                        'gtin':response.gtin,
+                        'BrandOwnerName':BrandOwnerName,
+                        'DataProviderName':DataProviderName,
+                        'ManufacturerName':ManufacturerName,
+                        'ContactTypeCode':ContactTypeCode,
+                        'Contact':Contact,
+                        'ContactAddress':ContactAddress,
+                        'ContactMethodCode':ContactMethodCode,
+                        'ContactDetails':ContactDetails,
+                        'BrandName':BrandName,
+                        'SubBrandName':SubBrandName,
+                        'ShortProductName':ShortProductName,
+                        'ProductMarketingMessage':ProductMarketingMessage,
+                        'SearchKeyWordsforProduct':SearchKeyWordsforProduct,
+                        'ProductTypeDescription':ProductTypeDescription,
+                        'Length':Length,
+                        'LengthUnit':LengthUnit,
+                        'Height':Height,
+                        'HeightUnit':HeightUnit,
+                        'Width':Width,
+                        'WidthUnit':WidthUnit,
+                        'GrossWeight':GrossWeight,
+                        'GrossWeightUnit':GrossWeightUnit,
+                        'MarketAvailabilityDate':MarketAvailabilityDate,
+                        'AllergenContainmentCode':AllergenContainmentCode,
+                        'AllergenTypeCode':AllergenTypeCode,
+                        'AllergenStatement':AllergenStatement,
+                        'IngredientStatement':IngredientStatement,
+                        'AllergenDeclarationsIndicator':AllergenDeclarationsIndicator,
+                        'Id' :Id
+                      
+                    },
+
+                    success: function (output) {
+                        Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Successfully add new product with gtin '+response.gtin,
+                        showConfirmButton: false,
+                        timer: 1500
+                        })
+                       
+                    }
+                });
+
+
+
+
+            }else{
+                Swal.fire({
+                title: 'Oops?',
+                text: "GTIN id can't allocated for this product!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Try again'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $( "#addNewGtinProduct" ).submit();
+                }
+                })
+            }
             
-    //     },
-
-    //     success: function (response) {
-
-            
-    //     }
-    // });
+        }
+    });
     
 });
 
@@ -561,6 +647,7 @@ $( "#addNewGtinProduct" ).submit(function(e) {
 
 
 </script>
+
 
 
 {% endblock %}
