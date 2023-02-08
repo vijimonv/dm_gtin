@@ -106,21 +106,53 @@ class addGTINProductEntry(View):
         AllergenStatement = req.get('AllergenStatement')
         IngredientStatement = req.get('IngredientStatement')
         AllergenDeclarationsIndicator = req.get('AllergenDeclarationsIndicator')
+        GPCCode = req.get('GPCCode')
+        FeedTypeCertification = req.get('FeedTypeCertification')
         Id = req.get('Id')
-        # print(AllergenDeclarationsIndicator)
-        if AllergenDeclarationsIndicator == 'true':
-            AllergenDeclarationsIndicator = True
-        else:
+        svrStatus = req.get('svrStatus')
+        Id = req.get('Id')
+        
+        print(MarketAvailabilityDate)
+        if MarketAvailabilityDate == "":
+            MarketAvailabilityDate = None
+        if Length == "":
+            Length = 0
+        if Height == "":
+            Height = 0
+        if Width == "":
+            Width = 0
+        if GrossWeight == "":
+            GrossWeight = 0
+        print(AllergenDeclarationsIndicator)
+        print("AllergenDeclarationsIndicator")
+        if AllergenDeclarationsIndicator == 'false':
             AllergenDeclarationsIndicator = False
-
-        if Id == "":
-            print('add')
-            Product.objects.create(gtin=gtin,BrandOwnerName=BrandOwnerName,DataProviderName=DataProviderName,ManufacturerName=ManufacturerName,ContactTypeCode=ContactTypeCode,Contact=Contact,ContactAddress=ContactAddress,ContactMethodCode=ContactMethodCode,ContactDetails=ContactDetails,BrandName=BrandName,SubBrandName=SubBrandName,ShortProductName=ShortProductName,ProductMarketingMessage=ProductMarketingMessage,SearchKeyWordsforProduct=SearchKeyWordsforProduct,ProductTypeDescription=ProductTypeDescription,Length=Length,LengthUnit=LengthUnit,Height=Height,HeightUnit=HeightUnit,Width=Width,WidthUnit=WidthUnit,GrossWeight=GrossWeight,GrossWeightUnit=GrossWeightUnit,MarketAvailabilityDate=MarketAvailabilityDate,AllergenContainmentCode=AllergenContainmentCode,AllergenTypeCode=AllergenTypeCode,AllergenStatement=AllergenStatement,IngredientStatement=IngredientStatement,AllergenDeclarationsIndicator=AllergenDeclarationsIndicator)
-            return JsonResponse({'status':1,'message':'Successfully add new product.'})
         else:
-            print('update')
-            Product.objects.filter(id=Id).update(BrandOwnerName=BrandOwnerName,DataProviderName=DataProviderName,ManufacturerName=ManufacturerName,ContactTypeCode=ContactTypeCode,Contact=Contact,ContactAddress=ContactAddress,ContactMethodCode=ContactMethodCode,ContactDetails=ContactDetails,BrandName=BrandName,SubBrandName=SubBrandName,ShortProductName=ShortProductName,ProductMarketingMessage=ProductMarketingMessage,SearchKeyWordsforProduct=SearchKeyWordsforProduct,ProductTypeDescription=ProductTypeDescription,Length=Length,LengthUnit=LengthUnit,Height=Height,HeightUnit=HeightUnit,Width=Width,WidthUnit=WidthUnit,GrossWeight=GrossWeight,GrossWeightUnit=GrossWeightUnit,MarketAvailabilityDate=MarketAvailabilityDate,AllergenContainmentCode=AllergenContainmentCode,AllergenTypeCode=AllergenTypeCode,AllergenStatement=AllergenStatement,IngredientStatement=IngredientStatement,AllergenDeclarationsIndicator=AllergenDeclarationsIndicator)
+            AllergenDeclarationsIndicator = True
+        
+        
+        if Id == "":
+            res = Product.objects.create(gtin=gtin,BrandOwnerName=BrandOwnerName,DataProviderName=DataProviderName,ManufacturerName=ManufacturerName,ContactTypeCode=ContactTypeCode,Contact=Contact,ContactAddress=ContactAddress,ContactMethodCode=ContactMethodCode,ContactDetails=ContactDetails,BrandName=BrandName,SubBrandName=SubBrandName,ShortProductName=ShortProductName,ProductMarketingMessage=ProductMarketingMessage,SearchKeyWordsforProduct=SearchKeyWordsforProduct,ProductTypeDescription=ProductTypeDescription,Length=Length,LengthUnit=LengthUnit,Height=Height,HeightUnit=HeightUnit,Width=Width,WidthUnit=WidthUnit,GrossWeight=GrossWeight,GrossWeightUnit=GrossWeightUnit,MarketAvailabilityDate=MarketAvailabilityDate,AllergenContainmentCode=AllergenContainmentCode,AllergenTypeCode=AllergenTypeCode,AllergenStatement=AllergenStatement,IngredientStatement=IngredientStatement,AllergenDeclarationsIndicator=AllergenDeclarationsIndicator,svrStatus=1,GPCCode=GPCCode,FeedTypeCertification=FeedTypeCertification)
+            return JsonResponse({'status':1,'message':'Successfully add new product.','id':res.id})
+        else:
+            Product.objects.filter(id=Id).update(BrandOwnerName=BrandOwnerName,DataProviderName=DataProviderName,ManufacturerName=ManufacturerName,ContactTypeCode=ContactTypeCode,Contact=Contact,ContactAddress=ContactAddress,ContactMethodCode=ContactMethodCode,ContactDetails=ContactDetails,BrandName=BrandName,SubBrandName=SubBrandName,ShortProductName=ShortProductName,ProductMarketingMessage=ProductMarketingMessage,SearchKeyWordsforProduct=SearchKeyWordsforProduct,ProductTypeDescription=ProductTypeDescription,Length=Length,LengthUnit=LengthUnit,Height=Height,HeightUnit=HeightUnit,Width=Width,WidthUnit=WidthUnit,GrossWeight=GrossWeight,GrossWeightUnit=GrossWeightUnit,MarketAvailabilityDate=MarketAvailabilityDate,AllergenContainmentCode=AllergenContainmentCode,AllergenTypeCode=AllergenTypeCode,AllergenStatement=AllergenStatement,IngredientStatement=IngredientStatement,AllergenDeclarationsIndicator=AllergenDeclarationsIndicator,svrStatus=svrStatus,GPCCode=GPCCode,FeedTypeCertification=FeedTypeCertification)
             return JsonResponse({'status':1,'message':'Successfully update product.'})
+            
+        
+        # print(AllergenDeclarationsIndicator)
+        # if AllergenDeclarationsIndicator == 'true':
+        #     AllergenDeclarationsIndicator = True
+        # else:
+        #     AllergenDeclarationsIndicator = False
+
+        # if Id == "":
+        #     print('add')
+        #     Product.objects.create(gtin=gtin,BrandOwnerName=BrandOwnerName,DataProviderName=DataProviderName,ManufacturerName=ManufacturerName,ContactTypeCode=ContactTypeCode,Contact=Contact,ContactAddress=ContactAddress,ContactMethodCode=ContactMethodCode,ContactDetails=ContactDetails,BrandName=BrandName,SubBrandName=SubBrandName,ShortProductName=ShortProductName,ProductMarketingMessage=ProductMarketingMessage,SearchKeyWordsforProduct=SearchKeyWordsforProduct,ProductTypeDescription=ProductTypeDescription,Length=Length,LengthUnit=LengthUnit,Height=Height,HeightUnit=HeightUnit,Width=Width,WidthUnit=WidthUnit,GrossWeight=GrossWeight,GrossWeightUnit=GrossWeightUnit,MarketAvailabilityDate=MarketAvailabilityDate,AllergenContainmentCode=AllergenContainmentCode,AllergenTypeCode=AllergenTypeCode,AllergenStatement=AllergenStatement,IngredientStatement=IngredientStatement,AllergenDeclarationsIndicator=AllergenDeclarationsIndicator)
+        #     return JsonResponse({'status':1,'message':'Successfully add new product.'})
+        # else:
+        #     print('update')
+        #     Product.objects.filter(id=Id).update(BrandOwnerName=BrandOwnerName,DataProviderName=DataProviderName,ManufacturerName=ManufacturerName,ContactTypeCode=ContactTypeCode,Contact=Contact,ContactAddress=ContactAddress,ContactMethodCode=ContactMethodCode,ContactDetails=ContactDetails,BrandName=BrandName,SubBrandName=SubBrandName,ShortProductName=ShortProductName,ProductMarketingMessage=ProductMarketingMessage,SearchKeyWordsforProduct=SearchKeyWordsforProduct,ProductTypeDescription=ProductTypeDescription,Length=Length,LengthUnit=LengthUnit,Height=Height,HeightUnit=HeightUnit,Width=Width,WidthUnit=WidthUnit,GrossWeight=GrossWeight,GrossWeightUnit=GrossWeightUnit,MarketAvailabilityDate=MarketAvailabilityDate,AllergenContainmentCode=AllergenContainmentCode,AllergenTypeCode=AllergenTypeCode,AllergenStatement=AllergenStatement,IngredientStatement=IngredientStatement,AllergenDeclarationsIndicator=AllergenDeclarationsIndicator)
+        #     return JsonResponse({'status':1,'message':'Successfully update product.'})
 
 class editGTINProductEntry(View):
     template_name = 'gtin-product-entry.html'
@@ -131,6 +163,7 @@ class editGTINProductEntry(View):
         id = req.get('id')
         res = Product.objects.filter(id=id)
         data.append({
+            'gtin': res[0].gtin,
             'BrandOwnerName' : res[0].BrandOwnerName,
             'DataProviderName' : res[0].DataProviderName,
             'ManufacturerName' : res[0].ManufacturerName,
@@ -159,6 +192,9 @@ class editGTINProductEntry(View):
             'AllergenStatement' : res[0].AllergenStatement,
             'IngredientStatement' : res[0].IngredientStatement,
             'AllergenDeclarationsIndicator':res[0].AllergenDeclarationsIndicator,
+            'svrStatus':res[0].svrStatus,
+            'GPCCode':res[0].GPCCode,
+            'FeedTypeCertification':res[0].FeedTypeCertification,
         })
 
         return JsonResponse({'status':1,'data':data})
