@@ -361,7 +361,7 @@
                     <div class="col-md-3 mt-2">
                         <label  class="form-label">Ingredient Statement *(min:5, max:100 -char)
                         </label>
-                        <textarea class="form-control" maxlength="15" minlength="100" id="IngredientStatement" value="" placeholder="Enter Ingredient Statement" onkeyup="removeErr('IngredientStatement') "></textarea>
+                        <textarea class="form-control" maxlength="100" minlength="15" id="IngredientStatement" value="" placeholder="Enter Ingredient Statement" onkeyup="removeErr('IngredientStatement') "></textarea>
                         <div class="invalid-feedback" id="IngredientStatementErr"></div>
                     </div>
 
@@ -478,6 +478,23 @@ $( "#addNewGtinProduct" ).submit(function(e) {
     validateField(BrandName, 'BrandName', "brand name", 5, 15)
     validateField(ShortProductName, 'ShortProductName', "short product name", 5, 15)
     validateField(ProductTypeDescription, 'ProductTypeDescription', "product type description", 5, 15)
+
+    var str2 = "pork";
+    console.log(FeedTypeCertification);
+    
+    if(FeedTypeCertification != "Other" && FeedTypeCertification != "" && IngredientStatement !=""){
+        if(IngredientStatement.indexOf(str2) != -1){
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Pork Found',
+                text: 'You cant add pork with “Halal” and “Kosher”, Please remove pork from ingredient statement',
+                showConfirmButton: false,
+                timer: 1500
+            })
+            isValidate = true;
+        }
+    }
    
     if(isValidate) return false;
     
@@ -710,6 +727,7 @@ function registerGtin(status){
     var IngredientStatement= $('#IngredientStatement').val().replace(/^\s+|\s+$/gm,'');
     var FeedTypeCertification = $('#FeedTypeCertification').val()
     var AllergenDeclarationsIndicator= $('#AllergenDeclarationsIndicator')[0].checked
+    
 
     var Id = $('#Id').val()
     var userId = $('#userId').val()
@@ -771,6 +789,23 @@ function registerGtin(status){
         $('#FeedTypeCertification').addClass('is-invalid')
         if(!isValidate) $('#FeedTypeCertification').focus()
         isValidate = true;
+    }
+
+    var str2 = "pork";
+    console.log(FeedTypeCertification);
+
+    if(FeedTypeCertification != "Other" && FeedTypeCertification != ""){
+        if(IngredientStatement.indexOf(str2) != -1){
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Pork Found',
+                text: 'You cant add pork with “Halal” and “Kosher”, Please remove pork from ingredient statement',
+                showConfirmButton: false,
+                timer: 1500
+            })
+            isValidate = true;
+        }
     }
     
     if(isValidate) return false;
