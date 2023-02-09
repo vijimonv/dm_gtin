@@ -25,7 +25,7 @@
 
     <script src="{% static "js/dataTables.min.js" %}" ></script>
 
-
+  
     <link rel="stylesheet" href="{% static "css/alert.css" %}" />
 
   
@@ -45,6 +45,18 @@
 </head>
 
 <body>
+
+    <div class="row border bg-light" >
+        <div class="col-md-12 ">
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end p-1">
+                    <label class="btn btn-block"><b>username: </b>{{ request.session.userName }}</label>
+                    <a class="btn btn-primary btn-block" href="/logout/" >Logout</a>
+                </div>
+       
+            
+        </div>
+    </div>
 
    
     <!-- content -->
@@ -68,6 +80,8 @@
     <script src="{% static "js/flatpickr.min.js" %}" ></script>
     <script src="{% static "js/plyr.js" %}" ></script>
     <script src="{% static "js/dropzone.min.js" %}" ></script>
+
+
 
    
 </body>

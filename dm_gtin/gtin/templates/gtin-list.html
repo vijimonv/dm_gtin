@@ -12,7 +12,7 @@
 <div class="container p-4">
     <h2>GTIN List</h2>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <a class="btn btn-primary btn-block" href="/" >Back</a>
+        <a class="btn btn-primary btn-block" href="/dashboard/" >Back</a>
     </div>
    
   
@@ -147,11 +147,18 @@ function getGtinList(){
                         var allocated = data[i][1];
                         var gtin_number = data[i][2];
 
-                        var row = '<tr><th scope="row">'+cont+'</th><td>'+gtin_number+'</td><td>';
-                        if(user_id == 0){ row = row+' -- </td><td>'; }
-                        else { row = row+user_id+'</td><td>' }
-                        if(allocated == 1){ row = row+'Y </td></tr>' }
-                        else {row = row+' -- </td></tr>' }
+                        var row = '<tr>';
+                        row = row+'<th scope="row">'+cont+'</th>';
+                        row = row+'<td>'+gtin_number+'</td>';
+                        if(user_id == 0 ) row = row+'<td></td>';
+                        else row = row+'<td>'+user_id+'</td>';
+                        if(allocated == 0 ) row = row+'<td class="text-danger">Not Allocated</td>';
+                        else if(allocated == 1 ) row = row+'<td class="text-primary">Allocated</td>';
+                        else if(allocated == 2 ) row = row+'<td class="text-warning">Registered</td>';
+                        else if(allocated == 3 ) row = row+'<td class="text-success">Activated</td>';
+                        row = row+'</tr>';
+
+
                         $('#gtin_table tr:last').after(row);
                     }
 

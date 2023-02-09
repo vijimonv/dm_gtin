@@ -17,7 +17,7 @@
             Add new
         </button>
 
-        <a class="btn btn-primary btn-block" href="/" >Back</a>
+        <a class="btn btn-primary btn-block" href="/dashboard/" >Back</a>
     </div>
 
 
@@ -27,30 +27,39 @@
                 <thead>
                     <tr>
                         <th>Gtin Num</th>
-                        <th>Brand Owner Name</th>
-                        <th>Data Provider Name</th>
-                        <th>Manufacturer Name</th>
-                        <th>Contact Type Code</th>
-                        <th>Contact</th>
-                        <th>Contact Address</th>
-                        <th>Contact Method Code</th>
-                        <th>Contact Details</th>
+
                         <th>Brand Name</th>
+                        <th>Brand Owner Name</th>
                         <th>Sub Brand Name</th>
+
+                        <th>Contact</th>
+                        <th>Contact Type Code</th>
+                        <th>Contact Method Code</th>
+                        <th>Contact Address</th>
+                        <th>Contact Details</th>
+
+
                         <th>Short Product Name</th>
                         <th>Product Marketing Message</th>
                         <th>Search KeyWords for Product</th>
                         <th>Product Type Description</th>
+                        <th>Data Provider Name</th>
+                        <th>Manufacturer Name</th>
+                        <th>GPC Code</th>
+                        <th>Market Availability Date</th>
+
                         <th>Length</th>
                         <th>Height</th>
                         <th>Width</th>
                         <th>Gross Weight</th>
-                        <th>Market Availability Date</th>
+                        
                         <th>Allergen Containment Code</th>
                         <th>Allergen Type Code</th>
                         <th>Allergen Statement</th>
                         <th>Ingredient Statement</th>
+                        <th>Feed Type Certification</th>
                         <th>Allergen Declarations Indicator</th>
+                        <th></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -85,7 +94,7 @@
 
                 <div class="row border mb-3 rounded" id="showGtin">
                     <div class="col-md-12 pt-3 pb-3 alert-success">
-                        <div  class="form-label d-inline">GTIN : <span id="gtnSpan"></span></div>
+                        <div  class="form-label d-inline"><b>GTIN :</b> <span id="gtnSpan"></span></div>
                         <div  class="form-label d-inline ml-4" style="margin-left: 20px;"><i class="bi bi-check-circle text-success" ></i> <span id="gtnStatusSpan"></span></div>
                     </div>
                 </div>
@@ -403,7 +412,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary" formnovalidate id="btnSubmit">Save</button>
                 <button type="button" class="btn btn-primary d-none" onclick="registerGtin(2)" id="gtinRegister">Register</button>
-                <button type="button" class="btn btn-primary d-none" onclick="registerGtin(3)" id="gtinActivate">Activate</button>
+                <button type="button" class="btn btn-success d-none" onclick="registerGtin(3)" id="gtinActivate">Activate</button>
             </div>
         </form>
       </div>
@@ -430,7 +439,7 @@ function onlyLettersAndSpaces(str) {
 
 $( "#addNewGtinProduct" ).submit(function(e) {
     e.preventDefault();
-
+   
     var BrandName= $('#BrandName').val().replace(/^\s+|\s+$/gm,'');
     var BrandOwnerName= $('#BrandOwnerName').val()
     var SubBrandName= $('#SubBrandName').val()
@@ -473,6 +482,10 @@ $( "#addNewGtinProduct" ).submit(function(e) {
     var userId = $('#userId').val()
     var svrStatus = $('#svrStatus').val()
 
+    if( {{ request.session.userRole }} != 1 && svrStatus == 3){
+        return false;
+    }
+
     isValidate = false;
 
     validateField(BrandName, 'BrandName', "brand name", 5, 15)
@@ -483,7 +496,8 @@ $( "#addNewGtinProduct" ).submit(function(e) {
     console.log(FeedTypeCertification);
     
     if(FeedTypeCertification != "Other" && FeedTypeCertification != "" && IngredientStatement !=""){
-        if(IngredientStatement.indexOf(str2) != -1){
+        var removedSpacesText = IngredientStatement.split(" ").join("");
+        if(removedSpacesText.indexOf(str2) != -1){
             Swal.fire({
                 position: 'center',
                 icon: 'error',
@@ -731,9 +745,14 @@ function registerGtin(status){
 
     var Id = $('#Id').val()
     var userId = $('#userId').val()
+
     var svrStatus = status
+    var svrStatusChk = $('#svrStatus').val()
+    svrStatusChk = parseInt(svrStatusChk) + 1;
 
     isValidate = false;
+
+    if(svrStatus != svrStatusChk) return false;
 
     validateField(BrandName, 'BrandName', "brand name", 5, 15)
     validateField(BrandOwnerName, 'BrandOwnerName', "brand owner name", 5, 15)
@@ -795,7 +814,8 @@ function registerGtin(status){
     console.log(FeedTypeCertification);
 
     if(FeedTypeCertification != "Other" && FeedTypeCertification != ""){
-        if(IngredientStatement.indexOf(str2) != -1){
+        var removedSpacesText = IngredientStatement.split(" ").join("");
+        if(removedSpacesText.indexOf(str2) != -1){
             Swal.fire({
                 position: 'center',
                 icon: 'error',
@@ -990,52 +1010,65 @@ function getGTINProduct(){
                 },
                 "columns" : [
                     {"data" : "gtin"},
-                    {"data" : "BrandOwnerName"},
-                    {"data" : "DataProviderName"},
-                    {"data" : "ManufacturerName"},
-                    {"data" : "ContactTypeCode"},
-                    {"data" : "Contact"},
-                    {"data" : "ContactAddress"},
-                    {"data" : "ContactMethodCode"},
-                    {"data" : "ContactDetails"},
-
                     {"data" : "BrandName"},
+                    {"data" : "BrandOwnerName"},
                     {"data" : "SubBrandName"},
+                    {"data" : "Contact"},
+                    {"data" : "ContactTypeCode"},
+                    {"data" : "ContactMethodCode"},
+                    {"data" : "ContactAddress"},
+                    {"data" : "ContactDetails"},
                     {"data" : "ShortProductName"},
                     {"data" : "ProductMarketingMessage"},
                     {"data" : "SearchKeyWordsforProduct"},
                     {"data" : "ProductTypeDescription"},
-
-                    {"data":null,"render":function(item){
-                            return item.Length+""+item.LengthUnit ;
-                        }
-                    },
-
-                    {"data":null,"render":function(item){
-                            return item.Height+""+item.HeightUnit ;
-                        }
-                    },
-
-                    {"data":null,"render":function(item){
-                            return item.Width+""+item.WidthUnit ;
-                        }
-                    },
-
-                    {"data":null,"render":function(item){
-                            return item.GrossWeight+""+item.GrossWeightUnit ;
-                        }
-                    },
-
+                    {"data" : "DataProviderName"},
+                    {"data" : "ManufacturerName"},
+                    {"data" : "GPCCode"},
                     {"data" : "MarketAvailabilityDate"},
+
+                    {"data":null,"render":function(item){
+                            if(item.Length == 0) return "";
+                            else return item.Length+""+item.LengthUnit ;
+                        }
+                    },
+
+                    {"data":null,"render":function(item){
+                            if(item.Height == 0) return "";
+                            else return item.Height+""+item.HeightUnit ;
+                        }
+                    },
+
+                    {"data":null,"render":function(item){
+                            if(item.Width == 0) return "";
+                            else return item.Width+""+item.WidthUnit ;
+                        }
+                    },
+
+                    {"data":null,"render":function(item){
+                            if(item.GrossWeight == 0) return "";
+                            else return item.GrossWeight+""+item.GrossWeightUnit ;
+                        }
+                    },
+
+                    
                     {"data" : "AllergenContainmentCode"},
                     {"data" : "AllergenTypeCode"},
                     {"data" : "AllergenStatement"},
                     {"data" : "IngredientStatement"},
+                    {"data" : "FeedTypeCertification"},
 
                     {"data":null,"render":function(item){
                             if(item.AllergenDeclarationsIndicator == true)
-                                return "yes";
-                            else return "no";
+                                return "<i class='bi bi-check-lg text-success'></i>";
+                            else return "<i class='bi bi-x-lg text-danger'></i>";
+                        }
+                    },
+
+                    {"data":null,"render":function(item){
+                            if(item.svrStatus == 1) return "<label>Allocated</label>";
+                            else if(item.svrStatus == 2) return '<label class="text-warning">Registered</label>' ;
+                            else if(item.svrStatus == 3) return '<label class="text-success">Activated</label>' ;
                         }
                     },
 
@@ -1052,6 +1085,7 @@ function getGTINProduct(){
 function opengtinModal(id){
     $("#addNewGtinProduct").find('.is-invalid').removeClass("is-invalid");
     if(id == ""){
+        $('#btnSubmit').removeClass('d-none');
         $('#BrandOwnerName').val('')
         $('#DataProviderName').val('')
         $('#ManufacturerName').val('')
@@ -1157,10 +1191,12 @@ function opengtinModal(id){
                     $('#FeedTypeCertification').val(data['FeedTypeCertification']).change();
 
                     if(data['svrStatus'] == 1){
+                        $('#btnSubmit').removeClass('d-none');
                         $('#gtinRegister').removeClass('d-none');
                         $('#gtinActivate').addClass('d-none');
                         $('#gtnStatusSpan').html('Allocated')
                     }else if(data['svrStatus'] == 2){
+                        $('#btnSubmit').removeClass('d-none');
                         $('#gtinRegister').addClass('d-none');
                         $('#gtinActivate').removeClass('d-none');
                         $('#gtnStatusSpan').html('Registed')
@@ -1168,6 +1204,12 @@ function opengtinModal(id){
                         $('#gtinRegister').addClass('d-none');
                         $('#gtinActivate').addClass('d-none');
                         $('#gtnStatusSpan').html('Activated')
+                        
+                        if( {{ request.session.userRole }} == 1){
+                            $('#btnSubmit').removeClass('d-none');
+                        }else{
+                            $('#btnSubmit').addClass('d-none');
+                        }
                     }
 
         
