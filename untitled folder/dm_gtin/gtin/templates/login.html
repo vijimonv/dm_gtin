@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <title>GTIN</title>
+    <!-- Meta Tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+   
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static "css/all.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap-icons.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/OverlayScrollbars.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/tiny-slider.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/choices.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/glightbox.min.css" %}" >
+    <link rel="stylesheet" type="text/css" href="{% static "css/dropzone.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/flatpickr.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/plyr.css" %}" />
+
+    <script src="{% static "js/jquery.min.js" %}" ></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static "css/jquery.dataTables.min.css" %}" />
+
+    <script src="{% static "js/dataTables.min.js" %}" ></script>
+
+  
+
+
+    <link rel="stylesheet" href="{% static "css/alert.css" %}" />
+
+  
+    <!-- Theme CSS -->
+    <link id="style-switch" rel="stylesheet" type="text/css" href="{% static "css/style.css" %}" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <script src="{% static "js/a076d05399.js" %}" crossorigin="anonymous"></script>
+
+    
+    <script>
+        var serverURL = "http://127.0.0.1:80/";
+    </script>
+
+
+</head>
+
+<body>
+
+
+<section class="vh-100">
+    <div class="container-fluid vh-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-9 col-lg-6 col-xl-5">
+          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+            class="img-fluid" alt="Sample image">
+        </div>
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <form id="login_form">
+           
+  
+            <!-- Username input -->
+            <div class="form-outline mb-4">
+              <input type="text" id="username" class="form-control form-control-lg"
+                placeholder="Enter a valid username" onkeyup="removeErr('username') "/>
+                <div class="invalid-feedback" id="usernameErr"></div>
+              <label class="form-label" >Email address</label>
+            </div>
+  
+            <!-- Password input -->
+            <div class="form-outline mb-3">
+              <input type="password" id="password" class="form-control form-control-lg"
+                placeholder="Enter password"  onkeyup="removeErr('password') "/>
+                <div class="invalid-feedback" id="passwordErr"></div>
+              <label class="form-label" >Password</label>
+            </div>
+  
+            <div class="d-flex justify-content-between align-items-center">
+              <!-- Checkbox -->
+              <div class="form-check mb-0">
+                <input class="form-check-input me-2" type="checkbox" value="" id="checkbox" />
+                <label class="form-check-label" >
+                  Remember me
+                </label>
+              </div>
+              {% comment %} <a href="#!" class="text-body">Forgot password?</a> {% endcomment %}
+            </div>
+  
+            <div class="text-center text-lg-start mt-4 pt-2">
+              <button type="submit" class="btn btn-primary btn-lg"
+                style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+              {% comment %} <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
+                  class="link-danger">Register</a></p> {% endcomment %}
+            </div>
+  
+          </form>
+        </div>
+      </div>
+    </div>
+   
+  </section>
+
+  
+
+<script>
+
+    $( document ).ready(function() {
+    });
+
+    $( "#login_form" ).submit(function(e) {
+        e.preventDefault();
+
+        var username= $('#username').val().replace(/^\s+|\s+$/gm,'');
+        var password= $('#password').val().replace(/^\s+|\s+$/gm,'');
+        var checkbox= $('#checkbox').val().replace(/^\s+|\s+$/gm,'');
+
+        var isValidate = false;
+
+        if(username == ""){
+            $('#username').addClass('is-invalid')
+            if(!isValidate) $('#username').focus()
+            $('#usernameErr').html('Please enter a username')
+            isValidate = true;
+        }
+
+        if(password == ""){
+            $('#password').addClass('is-invalid')
+            if(!isValidate) $('#password').focus()
+            $('#passwordErr').html('Please enter a password')
+            isValidate = true;
+        }
+
+        if(isValidate) return false;
+
+
+        $.ajax({
+            url: "/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'username':username,
+                'password':password,
+               
+            },
+
+            success: function (output) {
+                console.log(output)
+                if(output.status == 1){
+                   
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Successfully  login with username '+username,
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        setTimeout(function()
+                        {
+                            window.location.replace('/dashboard/')
+                        },500);
+                       
+                }else{
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Login Failed',
+                        text: output.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+
+                }
+            }
+        });
+
+            
+    });
+
+    function removeErr(id){
+        $('#'+id).removeClass('is-invalid');
+    }
+
+
+
+</script>
+
+
+
+    <!-- =======================
+    JS libraries, plugins and custom scripts -->
+
+    <!-- Bootstrap JS -->
+    <script src="{% static "js/bootstrap.bundle.min.js" %}"></script>
+
+    <!-- Vendors -->
+    <script src="{% static "js/alert.js" %}" ></script>
+    <script src="{% static "js/tiny-slider.js" %}" ></script>
+    <script src="{% static "js/OverlayScrollbars.min.js" %}" ></script>
+    <script src="{% static "js/choices.min.js" %}" ></script>
+    <script src="{% static "js/glightbox.min.js" %}" ></script>
+    <script src="{% static "js/flatpickr.min.js" %}" ></script>
+    <script src="{% static "js/plyr.js" %}" ></script>
+    <script src="{% static "js/dropzone.min.js" %}" ></script>
+
+   
+</body>
+</html>

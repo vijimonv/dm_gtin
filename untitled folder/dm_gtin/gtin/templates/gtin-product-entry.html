@@ -496,7 +496,7 @@ $( "#addNewGtinProduct" ).submit(function(e) {
     console.log(FeedTypeCertification);
     
     if(FeedTypeCertification != "Other" && FeedTypeCertification != "" && IngredientStatement !=""){
-        var removedSpacesText = IngredientStatement.split(" ").join("").toLowerCase();
+        var removedSpacesText = IngredientStatement.split(" ").join("");
         if(removedSpacesText.indexOf(str2) != -1){
             Swal.fire({
                 position: 'center',
@@ -983,7 +983,6 @@ function validateField(fieldVal, field, msg, min, max){
 
 
 function getGTINProduct(){
-    
 
     $('#example').DataTable().destroy();
     $('#example').DataTable({

@@ -1,0 +1,262 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- content -->
+
+<style>
+    .modal-body {
+        max-height: calc(100vh - 210px);
+        overflow-y: auto;
+    }
+</style>
+
+<div class="container p-4">
+    <h2>GTIN List</h2>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-primary btn-block" href="/dashboard/" >Back</a>
+    </div>
+   
+  
+</div>
+
+
+<div class="container " style="max-width: 600px">
+
+
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example mt-5">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled" id="btnPreviousTop">
+                <a class="page-link"
+                    href="#" onclick="getPrevious()" >Previous</a>
+            </li>
+
+            <div id="PaginationListTop"></div>
+
+            <li class="page-item " id="btnNextTop">
+                <a class="page-link"
+                    href="#" onclick="getNext();">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+    <table class="table table-striped bg-white" id="gtin_table">
+        <tbody ><tr align="center" ><td >Loading...</td></tr></tbody>
+    </table>
+
+
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example mt-5">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled" id="btnPreviousBottom">
+                <a class="page-link"
+                    href="#" onclick="getPrevious()">Previous</a>
+            </li>
+
+            <div id="PaginationListBottom"></div>
+
+            <li class="page-item " id="btnNextBottom">
+                <a class="page-link"
+                    href="#" onclick="getNext();">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+
+</div>
+
+
+
+
+
+
+
+
+<script>
+
+var offset = 0;
+var limit = 50;
+var selVal = 0;
+
+
+$( document ).ready(function() {
+    // $('#gtinModal').modal('toggle');
+    getGtinList();
+});
+
+function getPagin(){
+    var val = $('#PaginationDrop').val()
+    offset = (val) * limit;
+    getGtinList() ;
+}
+
+function getBottomPagin(){
+    var val = $('#PaginationDrop1').val()
+    offset = (val) * limit;
+    getGtinList() ;
+}
+
+function getPrevious(){
+    offset = (selVal - 1 ) * limit;
+    getGtinList() ;
+
+}
+
+function getNext(){
+    offset = (selVal + 1 ) * limit;
+    getGtinList() ;
+
+}
+
+function getGtinList(){
+
+    $.ajax({
+        url: serverURL+"getgtinlist",
+        method: 'GET',
+        mode: 'cors',
+        dataType: 'json',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+        },
+        data : {
+            'offset':offset,
+            'limit': limit
+        },
+        success: function (response) {
+            console.log(response)
+            if(response.status == 1){
+
+                var data = response.data
+                var len = data.length ;
+                console.log(data)
+                var cont = offset;
+                $("#gtin_table").html('');
+
+                if(len <= 0){
+                    $("#gtin_table").html('<tbody ><tr align="center"><td >No data available</td></tr></tbody>');
+                    $('#btnPreviousBottom').addClass('disabled')
+                    $('#btnPreviousTop').addClass('disabled')
+                    $('#btnNextBottom').addClass('disabled')
+                    $('#btnNextTop').addClass('disabled')
+
+                }else{
+                    $("#gtin_table").html('<thead ><tr class="bg-light"><th scope="col">#</th><th scope="col">GTIN Number</th><th scope="col">User Id</th><th scope="col">Allocated</th></tr></thead><tbody></tbody>');
+
+                    for(var i=0;i<len;i++){
+                        cont++;
+                        console.log(data[i])
+                        var user_id = data[i][0];
+                        var allocated = data[i][1];
+                        var gtin_number = data[i][2];
+
+                        var row = '<tr>';
+                        row = row+'<th scope="row">'+cont+'</th>';
+                        row = row+'<td>'+gtin_number+'</td>';
+                        if(user_id == 0 ) row = row+'<td></td>';
+                        else row = row+'<td>'+user_id+'</td>';
+                        if(allocated == 0 ) row = row+'<td class="text-danger">Not Allocated</td>';
+                        else if(allocated == 1 ) row = row+'<td class="text-primary">Allocated</td>';
+                        else if(allocated == 2 ) row = row+'<td class="text-warning">Registered</td>';
+                        else if(allocated == 3 ) row = row+'<td class="text-success">Activated</td>';
+                        row = row+'</tr>';
+
+
+                        $('#gtin_table tr:last').after(row);
+                    }
+
+                    setPagination(response.totalRec);
+
+                }
+
+                
+                
+
+            }
+        }
+    });
+}
+
+
+function setPagination(totalRec){
+
+    
+    var numberOfBtns = Math.ceil(totalRec / limit) ;
+
+    var PaginDataSet = '';
+    PaginDataSet = PaginDataSet+'<li class="page-item"><select class="form-select" name="PaginationDrop" id="PaginationDrop" onchange="getPagin()" >';
+
+    for(var i=0;i< numberOfBtns;i++){
+        var loopoffset = i*limit;
+        if(loopoffset == offset){
+            selVal = i;
+            PaginDataSet = PaginDataSet+'<option selected value="'+(i)+'" >'+(i+1)+'</option>';
+            if(offset == 0){
+                $('#btnPreviousBottom').addClass('disabled')
+                $('#btnPreviousTop').addClass('disabled')
+            }else{
+                $('#btnPreviousBottom').removeClass('disabled')
+                $('#btnPreviousTop').removeClass('disabled')
+            } 
+
+            if(i == (numberOfBtns -1 )){
+                $('#btnNextBottom').addClass('disabled')
+                $('#btnNextTop').addClass('disabled')
+            }else{
+                $('#btnNextBottom').removeClass('disabled')
+                $('#btnNextTop').removeClass('disabled')
+            } 
+
+
+        }else{
+            PaginDataSet = PaginDataSet+'<option value="'+(i)+'" >'+(i+1)+'</option>';
+        }
+    }
+
+    PaginDataSet = PaginDataSet+'</select></li>';
+
+    var PaginDataSet1 = '';
+    PaginDataSet1 = PaginDataSet1+'<li class="page-item"><select class="form-select" name="PaginationDrop1" id="PaginationDrop1" onchange="getBottomPagin()" >';
+
+    for(var i=0;i< numberOfBtns;i++){
+        var loopoffset = i*limit;
+        if(loopoffset == offset){
+            selVal = i;
+            PaginDataSet1 = PaginDataSet1+'<option selected value="'+(i)+'" >'+(i+1)+'</option>';
+            if(offset == 0){
+                $('#btnPreviousBottom').addClass('disabled')
+                $('#btnPreviousTop').addClass('disabled')
+            }else{
+                $('#btnPreviousBottom').removeClass('disabled')
+                $('#btnPreviousTop').removeClass('disabled')
+            } 
+
+            if(i == (numberOfBtns -1 )){
+                $('#btnNextBottom').addClass('disabled')
+                $('#btnNextTop').addClass('disabled')
+            }else{
+                $('#btnNextBottom').removeClass('disabled')
+                $('#btnNextTop').removeClass('disabled')
+            } 
+
+
+        }else{
+            PaginDataSet1 = PaginDataSet1+'<option value="'+(i)+'" >'+(i+1)+'</option>';
+        }
+    }
+
+    PaginDataSet1 = PaginDataSet1+'</select></li>';
+    
+    
+    $('#PaginationListTop').html(PaginDataSet)
+    $('#PaginationListBottom').html(PaginDataSet1)
+
+
+}
+
+
+</script>
+
+
+
+{% endblock %}
