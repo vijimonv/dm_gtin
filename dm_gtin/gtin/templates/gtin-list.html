@@ -19,29 +19,49 @@
 </div>
 
 
+<div class="container " style="max-width: 600px">
 
 
-<!-- Pagination -->
-<nav aria-label="Page navigation example mt-5">
-    <ul class="pagination justify-content-center">
-        <li class="page-item disabled" id="btnPreviousTop">
-            <a class="page-link"
-                href="#" onclick="getPrevious()" >Previous</a>
-        </li>
 
-        <div id="PaginationListTop"></div>
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example mt-5">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled" id="btnPreviousTop">
+                <a class="page-link"
+                    href="#" onclick="getPrevious()" >Previous</a>
+            </li>
 
-        <li class="page-item " id="btnNextTop">
-            <a class="page-link"
-                href="#" onclick="getNext();">Next</a>
-        </li>
-    </ul>
-</nav>
+            <div id="PaginationListTop"></div>
 
-<div class="container ">
+            <li class="page-item " id="btnNextTop">
+                <a class="page-link"
+                    href="#" onclick="getNext();">Next</a>
+            </li>
+        </ul>
+    </nav>
 
-    <table class="table table-hover bg-white" id="gtin_table">
+    <table class="table table-striped bg-white" id="gtin_table">
     </table>
+
+
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example mt-5">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled" id="btnPreviousBottom">
+                <a class="page-link"
+                    href="#" onclick="getPrevious()">Previous</a>
+            </li>
+
+            <div id="PaginationListBottom"></div>
+
+            <li class="page-item " id="btnNextBottom">
+                <a class="page-link"
+                    href="#" onclick="getNext();">Next</a>
+            </li>
+        </ul>
+    </nav>
+
 
 </div>
 
@@ -49,24 +69,6 @@
 
 
 
-
-
-<!-- Pagination -->
-<nav aria-label="Page navigation example mt-5">
-    <ul class="pagination justify-content-center">
-        <li class="page-item disabled" id="btnPreviousBottom">
-            <a class="page-link"
-                href="#" onclick="getPrevious()">Previous</a>
-        </li>
-
-        <div id="PaginationListBottom"></div>
-
-        <li class="page-item " id="btnNextBottom">
-            <a class="page-link"
-                href="#" onclick="getNext();">Next</a>
-        </li>
-    </ul>
-</nav>
 
 
 
@@ -138,7 +140,7 @@ function getGtinList(){
                     $('#btnNextTop').addClass('disabled')
 
                 }else{
-                    $("#gtin_table").html('<thead><tr><th scope="col">#</th><th scope="col">GTIN Number</th><th scope="col">User Id</th><th scope="col">Allocated</th></tr></thead><tbody></tbody>');
+                    $("#gtin_table").html('<thead ><tr class="bg-light"><th scope="col">#</th><th scope="col">GTIN Number</th><th scope="col">User Id</th><th scope="col">Allocated</th></tr></thead><tbody></tbody>');
 
                     for(var i=0;i<len;i++){
                         cont++;
