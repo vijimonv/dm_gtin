@@ -433,8 +433,8 @@ function removeErr(id){
     $('#'+id).removeClass('is-invalid');
 }
 
-function onlyLettersAndSpaces(str) {
-    return /^[a-zA-Z0-9 ]*$/.test(str);
+function isASCII(str) {
+    return /^[\x00-\x7F]*$/.test(str);
 }
 
 $( "#addNewGtinProduct" ).submit(function(e) {
@@ -492,17 +492,43 @@ $( "#addNewGtinProduct" ).submit(function(e) {
     validateField(ShortProductName, 'ShortProductName', "short product name", 5, 15)
     validateField(ProductTypeDescription, 'ProductTypeDescription', "product type description", 5, 15)
 
+
+    checkValidateField(BrandOwnerName, 'BrandOwnerName', "brand owner name", 5, 15)
+    checkValidateField(SubBrandName, 'SubBrandName', "sub brand name", 5, 15)
+    checkValidateField(Contact, 'Contact', "contact", 5, 15)
+    checkValidateField(ContactTypeCode, 'ContactTypeCode', "contact type code", 5, 15)
+    checkValidateField(ContactMethodCode, 'ContactMethodCode', "contact method code", 5, 15)
+    checkValidateField(ContactAddress, 'ContactAddress', "contact address", 5, 15)
+    checkValidateField(ContactDetails, 'ContactDetails', "contact details", 5, 15)
+    checkValidateField(ProductMarketingMessage, 'ProductMarketingMessage', "product marketing message", 5, 15)
+    checkValidateField(SearchKeyWordsforProduct, 'SearchKeyWordsforProduct', "search key words for product", 5, 15)
+    checkValidateField(DataProviderName, 'DataProviderName', "data provider name", 5, 15)
+    checkValidateField(ManufacturerName, 'ManufacturerName', "manu facturer name", 5, 15)
+    checkValidateField(AllergenContainmentCode, 'AllergenContainmentCode', "allergen containment code", 5, 15)
+    checkValidateField(AllergenTypeCode, 'AllergenTypeCode', "allergen type code", 5, 15)
+    checkValidateField(AllergenStatement, 'AllergenStatement', "allergen statement", 5, 15)
+    checkValidateField(IngredientStatement, 'IngredientStatement', "ingredient statement", 5, 15)
+
+
+
     var str2 = "pork";
     console.log(FeedTypeCertification);
+    var str3 = "ham";
     
     if(FeedTypeCertification != "Other" && FeedTypeCertification != "" && IngredientStatement !=""){
         var removedSpacesText = IngredientStatement.split(" ").join("").toLowerCase();
-        if(removedSpacesText.indexOf(str2) != -1){
+        var errDis = '';
+        if(removedSpacesText.indexOf(str2) != -1 && removedSpacesText.indexOf(str3) != -1) { errDis = 'Pork and Ham' }
+        else if(removedSpacesText.indexOf(str2) != -1) { errDis = 'Pork' }
+        else if(removedSpacesText.indexOf(str3) != -1) { errDis = 'Ham' }
+
+
+        if(removedSpacesText.indexOf(str2) != -1 || removedSpacesText.indexOf(str3) != -1){
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                title: 'Pork Found',
-                text: 'You cant add pork with “Halal” and “Kosher”, Please remove pork from ingredient statement',
+                title: errDis+' Found',
+                text: 'You cant add '+errDis+' with “Halal” and “Kosher”, Please remove '+errDis+' from ingredient statement',
                 showConfirmButton: false,
                 timer: 1500
             })
@@ -812,15 +838,22 @@ function registerGtin(status){
 
     var str2 = "pork";
     console.log(FeedTypeCertification);
-
-    if(FeedTypeCertification != "Other" && FeedTypeCertification != ""){
+    var str3 = "ham";
+    
+    if(FeedTypeCertification != "Other" && FeedTypeCertification != "" && IngredientStatement !=""){
         var removedSpacesText = IngredientStatement.split(" ").join("").toLowerCase();
-        if(removedSpacesText.indexOf(str2) != -1){
+        var errDis = '';
+        if(removedSpacesText.indexOf(str2) != -1 && removedSpacesText.indexOf(str3) != -1) { errDis = 'Pork and Ham' }
+        else if(removedSpacesText.indexOf(str2) != -1) { errDis = 'Pork' }
+        else if(removedSpacesText.indexOf(str3) != -1) { errDis = 'Ham' }
+
+
+        if(removedSpacesText.indexOf(str2) != -1 || removedSpacesText.indexOf(str3) != -1){
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                title: 'Pork Found',
-                text: 'You cant add pork with “Halal” and “Kosher”, Please remove pork from ingredient statement',
+                title: errDis+' Found',
+                text: 'You cant add '+errDis+' with “Halal” and “Kosher”, Please remove '+errDis+' from ingredient statement',
                 showConfirmButton: false,
                 timer: 1500
             })
@@ -961,6 +994,24 @@ function registerGtin(status){
 
 }
 
+function checkValidateField(fieldVal, field, msg, min, max){
+
+    if(fieldVal != ""){
+        if( fieldVal.length < min ){
+            $('#'+field).addClass('is-invalid')
+            $('#'+field+'Err').html('Please enter atleast '+min+' character.')
+            if(!isValidate) $('#'+field).focus()
+            isValidate = true;
+        }else if( !isASCII(fieldVal) ){
+            $('#'+field).addClass('is-invalid')
+            $('#'+field+'Err').html('Please enter a valid '+msg+'.')
+            if(!isValidate) $('#'+field).focus()
+            isValidate = true;
+        }
+    }
+}
+
+
 function validateField(fieldVal, field, msg, min, max){
 
     if(fieldVal == ""){
@@ -973,7 +1024,7 @@ function validateField(fieldVal, field, msg, min, max){
         $('#'+field+'Err').html('Please enter atleast '+min+' character.')
         if(!isValidate) $('#'+field).focus()
         isValidate = true;
-    }else if( !onlyLettersAndSpaces(fieldVal) ){
+    }else if( !isASCII(fieldVal) ){
         $('#'+field).addClass('is-invalid')
         $('#'+field+'Err').html('Please enter a valid '+msg+'.')
         if(!isValidate) $('#'+field).focus()

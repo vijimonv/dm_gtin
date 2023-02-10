@@ -32,13 +32,13 @@ class Product(models.Model):
     GPCCode= models.CharField(max_length=50,null = True)
     MarketAvailabilityDate= models.DateField(null = True)
 
-    Length= models.IntegerField(default=0)
+    Length= models.FloatField(default=0)
     LengthUnit= models.CharField(max_length=10)
-    Height= models.IntegerField(default=0)
+    Height= models.FloatField(default=0)
     HeightUnit= models.CharField(max_length=10)
-    Width= models.IntegerField(default=0)
+    Width= models.FloatField(default=0)
     WidthUnit= models.CharField(max_length=10)
-    GrossWeight= models.IntegerField(default=0)
+    GrossWeight= models.FloatField(default=0)
     GrossWeightUnit= models.CharField(max_length=10)
     
     AllergenContainmentCode= models.CharField(max_length=50,null = True)
