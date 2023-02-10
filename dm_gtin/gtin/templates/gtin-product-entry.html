@@ -814,7 +814,7 @@ function registerGtin(status){
     console.log(FeedTypeCertification);
 
     if(FeedTypeCertification != "Other" && FeedTypeCertification != ""){
-        var removedSpacesText = IngredientStatement.split(" ").join("");
+        var removedSpacesText = IngredientStatement.split(" ").join("").toLowerCase();
         if(removedSpacesText.indexOf(str2) != -1){
             Swal.fire({
                 position: 'center',
