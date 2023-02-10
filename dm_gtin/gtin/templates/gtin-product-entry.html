@@ -410,9 +410,20 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" formnovalidate id="btnSubmit">Save</button>
-                <button type="button" class="btn btn-primary d-none" onclick="registerGtin(2)" id="gtinRegister">Register</button>
-                <button type="button" class="btn btn-success d-none" onclick="registerGtin(3)" id="gtinActivate">Activate</button>
+                <button type="submit" class="btn btn-primary" formnovalidate id="btnSubmit">
+                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="btnSubmitLoader"></span>
+                    <span id="btnSubmitText">Save</span>
+                </button>
+                <button type="button" class="btn btn-primary d-none" onclick="registerGtin(2)" id="gtinRegister">
+                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="btnRegisterLoader"></span>
+                    <span >Register</span>
+                    
+                </button>
+                <button type="button" class="btn btn-success d-none" onclick="registerGtin(3)" id="gtinActivate">
+                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="btnActivateLoader"></span>
+                    <span >Activate</span>
+                    
+                </button>
             </div>
         </form>
       </div>
@@ -537,6 +548,10 @@ $( "#addNewGtinProduct" ).submit(function(e) {
     }
    
     if(isValidate) return false;
+
+    $('#btnSubmitLoader').removeClass('d-none');
+    $('#btnSubmit').prop('disabled', true);
+
     
 
     if(Id == ""){
@@ -615,6 +630,8 @@ $( "#addNewGtinProduct" ).submit(function(e) {
                                         getGTINProduct();
                                         $('#gtinModal').modal('hide');
                                     },500);
+                                    $('#btnSubmitLoader').addClass('d-none');
+                                    $('#btnSubmit').prop('disabled', false);
 
                             }else{
                                 Swal.fire({
@@ -625,6 +642,8 @@ $( "#addNewGtinProduct" ).submit(function(e) {
                                     showConfirmButton: false,
                                     timer: 1500
                                 })
+                                $('#btnSubmitLoader').addClass('d-none');
+                                $('#btnSubmit').prop('disabled', false);
 
                             }
                         }
@@ -644,6 +663,9 @@ $( "#addNewGtinProduct" ).submit(function(e) {
                         $( "#addNewGtinProduct" ).submit();
                     }
                     })
+
+                    $('#btnSubmitLoader').addClass('d-none');
+                    $('#btnSubmit').prop('disabled', false);
                 }
 
             }
@@ -712,6 +734,8 @@ $( "#addNewGtinProduct" ).submit(function(e) {
                             getGTINProduct();
                             $('#gtinModal').modal('hide');
                         },500);
+                        $('#btnSubmitLoader').addClass('d-none');
+                        $('#btnSubmit').prop('disabled', false);
 
                 }else{
                     Swal.fire({
@@ -722,6 +746,8 @@ $( "#addNewGtinProduct" ).submit(function(e) {
                         showConfirmButton: false,
                         timer: 1500
                     })
+                    $('#btnSubmitLoader').addClass('d-none');
+                    $('#btnSubmit').prop('disabled', false);
 
                 }
             }
@@ -864,6 +890,11 @@ function registerGtin(status){
     if(isValidate) return false;
     var gtinId = $('#gtinId').val()
 
+    $('#btnRegisterLoader').removeClass('d-none');
+    $('#btnActivateLoader').removeClass('d-none');
+    $('#gtinActivate').prop('disabled', true);
+    $('#gtinRegister').prop('disabled', true);
+
     
 
     $.ajax({
@@ -946,6 +977,11 @@ function registerGtin(status){
                                     getGTINProduct();
                                     $('#gtinModal').modal('hide');
                                 },500);
+
+                                $('#gtinActivate').prop('disabled', false);
+                                $('#gtinRegister').prop('disabled', false);
+                                $('#btnRegisterLoader').addClass('d-none');
+                                $('#btnActivateLoader').addClass('d-none');
             
                         }else{
                             var messageErr ='';
@@ -960,6 +996,11 @@ function registerGtin(status){
                                 showConfirmButton: false,
                                 timer: 1500
                             })
+
+                            $('#gtinActivate').prop('disabled', false);
+                            $('#gtinRegister').prop('disabled', false);
+                            $('#btnRegisterLoader').addClass('d-none');
+                            $('#btnActivateLoader').addClass('d-none');
             
                         }
                     }
@@ -985,6 +1026,11 @@ function registerGtin(status){
                     registerGtin(status);
                 }
                 })
+
+                $('#gtinActivate').prop('disabled', false);
+                $('#gtinRegister').prop('disabled', false);
+                $('#btnRegisterLoader').addClass('d-none');
+                $('#btnActivateLoader').addClass('d-none');
             }
 
         }
@@ -1136,6 +1182,16 @@ function getGTINProduct(){
 
 function opengtinModal(id){
     $("#addNewGtinProduct").find('.is-invalid').removeClass("is-invalid");
+    $('#btnRegisterLoader').addClass('d-none');
+    $('#btnActivateLoader').addClass('d-none');
+    $('#btnSubmitLoader').addClass('d-none');
+
+    $('#gtinActivate').prop('disabled', false);
+    $('#gtinRegister').prop('disabled', false);
+    $('#btnSubmit').prop('disabled', false);
+
+
+
     if(id == ""){
         $('#btnSubmit').removeClass('d-none');
         $('#BrandOwnerName').val('')
@@ -1174,7 +1230,7 @@ function opengtinModal(id){
 
         $('#gtinRegister').addClass('d-none');
         $('#gtinActivate').addClass('d-none');
-        $('#btnSubmit').html('Save');
+        $('#btnSubmitText').html('Save');
         $('#gtinModalLabel').html('Add new GTIN Product');
         
 
@@ -1193,7 +1249,7 @@ function opengtinModal(id){
                // console.log(response)
                 if(response.status == 1){
                     var data = response.data[0];
-                    $('#btnSubmit').html('Save changes');
+                    $('#btnSubmitText').html('Save changes');
                     $('#gtinModalLabel').html('Edit GTIN Product');
                     $('#showGtin').removeClass('d-none');
                     $('#gtnSpan').html(data['gtin'])
