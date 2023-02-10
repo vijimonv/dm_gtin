@@ -503,23 +503,78 @@ $( "#addNewGtinProduct" ).submit(function(e) {
     validateField(ShortProductName, 'ShortProductName', "short product name", 5, 15)
     validateField(ProductTypeDescription, 'ProductTypeDescription', "product type description", 5, 15)
 
+    if(svrStatus == 0 || svrStatus == 1){
+        checkValidateField(BrandOwnerName, 'BrandOwnerName', "brand owner name", 5, 15)
+        checkValidateField(SubBrandName, 'SubBrandName', "sub brand name", 5, 15)
+        checkValidateField(Contact, 'Contact', "contact", 5, 15)
+        checkValidateField(ContactTypeCode, 'ContactTypeCode', "contact type code", 5, 15)
+        checkValidateField(ContactMethodCode, 'ContactMethodCode', "contact method code", 5, 15)
+        checkValidateField(ContactAddress, 'ContactAddress', "contact address", 5, 15)
+        checkValidateField(ContactDetails, 'ContactDetails', "contact details", 5, 15)
+        checkValidateField(ProductMarketingMessage, 'ProductMarketingMessage', "product marketing message", 5, 15)
+        checkValidateField(SearchKeyWordsforProduct, 'SearchKeyWordsforProduct', "search key words for product", 5, 15)
+        checkValidateField(DataProviderName, 'DataProviderName', "data provider name", 5, 15)
+        checkValidateField(ManufacturerName, 'ManufacturerName', "manu facturer name", 5, 15)
+        checkValidateField(AllergenContainmentCode, 'AllergenContainmentCode', "allergen containment code", 5, 15)
+        checkValidateField(AllergenTypeCode, 'AllergenTypeCode', "allergen type code", 5, 15)
+        checkValidateField(AllergenStatement, 'AllergenStatement', "allergen statement", 5, 15)
+        checkValidateField(IngredientStatement, 'IngredientStatement', "ingredient statement", 5, 15)
 
-    checkValidateField(BrandOwnerName, 'BrandOwnerName', "brand owner name", 5, 15)
-    checkValidateField(SubBrandName, 'SubBrandName', "sub brand name", 5, 15)
-    checkValidateField(Contact, 'Contact', "contact", 5, 15)
-    checkValidateField(ContactTypeCode, 'ContactTypeCode', "contact type code", 5, 15)
-    checkValidateField(ContactMethodCode, 'ContactMethodCode', "contact method code", 5, 15)
-    checkValidateField(ContactAddress, 'ContactAddress', "contact address", 5, 15)
-    checkValidateField(ContactDetails, 'ContactDetails', "contact details", 5, 15)
-    checkValidateField(ProductMarketingMessage, 'ProductMarketingMessage', "product marketing message", 5, 15)
-    checkValidateField(SearchKeyWordsforProduct, 'SearchKeyWordsforProduct', "search key words for product", 5, 15)
-    checkValidateField(DataProviderName, 'DataProviderName', "data provider name", 5, 15)
-    checkValidateField(ManufacturerName, 'ManufacturerName', "manu facturer name", 5, 15)
-    checkValidateField(AllergenContainmentCode, 'AllergenContainmentCode', "allergen containment code", 5, 15)
-    checkValidateField(AllergenTypeCode, 'AllergenTypeCode', "allergen type code", 5, 15)
-    checkValidateField(AllergenStatement, 'AllergenStatement', "allergen statement", 5, 15)
-    checkValidateField(IngredientStatement, 'IngredientStatement', "ingredient statement", 5, 15)
-
+        
+    }else{
+        validateField(BrandOwnerName, 'BrandOwnerName', "brand owner name", 5, 15)
+        validateField(SubBrandName, 'SubBrandName', "sub brand name", 5, 15)
+        validateField(Contact, 'Contact', "contact", 5, 15)
+        validateField(ContactTypeCode, 'ContactTypeCode', "contact type code", 5, 15)
+        validateField(ContactMethodCode, 'ContactMethodCode', "contact method code", 5, 15)
+        validateField(ContactAddress, 'ContactAddress', "contact address", 5, 15)
+        validateField(ContactDetails, 'ContactDetails', "contact details", 5, 15)
+        validateField(ProductMarketingMessage, 'ProductMarketingMessage', "product marketing message", 5, 15)
+        validateField(SearchKeyWordsforProduct, 'SearchKeyWordsforProduct', "search key words for product", 5, 15)
+        validateField(DataProviderName, 'DataProviderName', "data provider name", 5, 15)
+        validateField(ManufacturerName, 'ManufacturerName', "manu facturer name", 5, 15)
+    
+        if(MarketAvailabilityDate == ""){
+            $('#MarketAvailabilityDate').addClass('is-invalid')
+            if(!isValidate) $('#MarketAvailabilityDate').focus()
+            isValidate = true;
+        }
+    
+        if(Length == ""){
+            $('#Length').addClass('is-invalid')
+            if(!isValidate) $('#Length').focus()
+            isValidate = true;
+        }
+    
+        if(Height == ""){
+            $('#Height').addClass('is-invalid')
+            if(!isValidate) $('#Height').focus()
+            isValidate = true;
+        }
+    
+        if(Width == ""){
+            $('#Width').addClass('is-invalid')
+            if(!isValidate) $('#Width').focus()
+            isValidate = true;
+        }
+    
+        if(GrossWeight == ""){
+            $('#GrossWeight').addClass('is-invalid')
+            if(!isValidate) $('#GrossWeight').focus()
+            isValidate = true;
+        }
+    
+        validateField(AllergenContainmentCode, 'AllergenContainmentCode', "allergen containment code", 5, 15)
+        validateField(AllergenTypeCode, 'AllergenTypeCode', "allergen type code", 5, 15)
+        validateField(AllergenStatement, 'AllergenStatement', "allergen statement", 5, 15)
+        validateField(IngredientStatement, 'IngredientStatement', "ingredient statement", 5, 15)
+    
+        if(FeedTypeCertification == ""){
+            $('#FeedTypeCertification').addClass('is-invalid')
+            if(!isValidate) $('#FeedTypeCertification').focus()
+            isValidate = true;
+        }
+    }
 
 
     var str2 = "pork";
